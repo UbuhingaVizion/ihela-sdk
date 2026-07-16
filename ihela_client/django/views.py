@@ -1,9 +1,9 @@
 from allauth.socialaccount.models import SocialLogin
-from allauth.socialaccount.providers.oauth2.client import OAuth2Client, OAuth2Error
 from allauth.socialaccount.providers.oauth2.views import OAuth2View
-from ihelaprovider.base import iHelaAdapter
+from django.conf import settings
+from django.http import HttpResponseNotAllowed
 
-from ihela_client.client import Client as iHelaAPIClient
+from ihela_client import MerchantAuthorizationClient as iHelaAPIClient
 
 
 class iHelaClientBaseView(OAuth2View):
@@ -21,23 +21,31 @@ class iHelaClientBaseView(OAuth2View):
         elif request.method == "POST":
             return self.post(request, *args, **kwargs)
         else:
-            pass
-            # Raise Method Not Allowed
+            return HttpResponseNotAllowed(["GET", "POST"])
 
-    def get_client(self):
+    def get_client(self, request, app):
+        client_id = getattr(app, "client_id", getattr(app, "consumer_key", None))
+        client_secret = getattr(app, "secret", getattr(app, "consumer_secret", None))
+        test_env = getattr(settings, "IHELA_TEST_ENV", True)
+        ihela_url = (
+            getattr(
+                settings, "OAUTH_IHELA_SERVER_BASEURL", "https://testgate.ihela.online"
+            )
+            + "/"
+        )
         cl = iHelaAPIClient(
-            self.client.consumer_key,
-            self.client.consumer_secret,
-            state=self.client.state,
-            test=TEST_ENV,
-            ihela_url=settings.OAUTH_IHELA_SERVER_BASEURL + "/",
+            client_id,
+            client_secret,
+            state=None,
+            test=test_env,
+            ihela_url=ihela_url,
         )
 
         return cl
 
     @property
     def get_absolute_url(self):
-        return request.build_absolute_uri(self.request.path)
+        return self.request.build_absolute_uri(self.request.path)
 
 
 class iHelaClientCodeView(iHelaClientBaseView):
@@ -48,4 +56,6 @@ class iHelaClientCodeView(iHelaClientBaseView):
         return self.request.GET.get("error", None)
 
     def get_payment_object(self):
-        raise NotImplementedError("An iHelaClientCodeView child must have a method called `get_payment_object`.")
+        raise NotImplementedError(
+            "An iHelaClientCodeView child must have a method called `get_payment_object`."
+        )
