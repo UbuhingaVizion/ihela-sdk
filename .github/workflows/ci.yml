@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - "feature/**"
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  tox:
+    name: Run ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        toxenv: [lint, d52, d60, docs, pkg_meta]
+        include:
+          - toxenv: lint
+            python-version: "3.13"
+          - toxenv: d52
+            python-version: "3.13"
+          - toxenv: d60
+            python-version: "3.13"
+          - toxenv: docs
+            python-version: "3.13"
+          - toxenv: pkg_meta
+            python-version: "3.13"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Run tox environment
+        run: uv run tox -e ${{ matrix.toxenv }}
