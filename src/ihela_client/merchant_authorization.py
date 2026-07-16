@@ -30,15 +30,17 @@ iHela_AUTH_URL = "oAuth2/authorize/"
 
 iHela_ENDPOINTS = {
     "USER_INFO": "api/v1/connected-user/",
-    # "BILL_INIT": "api/v1/payments/bill/init/",
-    # "BILL_VERIFY": "api/v1/payments/bill/verify/",
+    "BILL_INIT": "api/v1/payments/bill-init/",
+    "BILL_VERIFY": "api/v1/payments/bill-check/",
 }
 
 
 class MerchantAuthorizationClient:
     provider_name = "iHelá"
 
-    def __init__(self, client_id, client_secret, state=None, test=False, ihela_url=None):
+    def __init__(
+        self, client_id, client_secret, state=None, test=False, ihela_url=None
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
         self.auth_token_object = None
@@ -60,7 +62,7 @@ class MerchantAuthorizationClient:
             logger.debug(resp_json)
             return resp_json
         except json.decoder.JSONDecodeError:
-            logger.error("IHELA_CLIENT_ERROR : %s" % resp.text)
+            logger.error(f"IHELA_CLIENT_ERROR : {resp.text}")
             return {"errors": {"request": "An error occured during request"}}
 
     def get_url(self, url):
@@ -69,8 +71,10 @@ class MerchantAuthorizationClient:
     def get_auth_headers(self):
         if self.is_authenticated():
             return {
-                "Authorization": "%s %s"
-                % (self.auth_token_object["token_type"], self.auth_token_object["access_token"])
+                "Authorization": "{} {}".format(
+                    self.auth_token_object["token_type"],
+                    self.auth_token_object["access_token"],
+                )
             }
         return {}
 
@@ -91,10 +95,8 @@ class MerchantAuthorizationClient:
             "redirect_uri": urllib.parse.quote(redirect_uri),
         }
         # auth_parms = urllib.parse.urlencode(auth_dict)
-        auth_parms = (
-            "state={state}&response_type={response_type}&client_id={client_id}&redirect_uri={redirect_uri}".format(
-                **auth_dict
-            )
+        auth_parms = "state={state}&response_type={response_type}&client_id={client_id}&redirect_uri={redirect_uri}".format(
+            **auth_dict
         )
 
         # return requests.utils.requote_uri(self.get_url(iHela_AUTH_URL) + "?" + auth_parms)
@@ -124,7 +126,9 @@ class MerchantAuthorizationClient:
         return auth_
 
     def is_authenticated(self):
-        if isinstance(self.auth_token_object, dict) and self.auth_token_object.get("access_token", None):
+        if isinstance(self.auth_token_object, dict) and self.auth_token_object.get(
+            "access_token", None
+        ):
             return True
         return False
 
@@ -155,7 +159,9 @@ class MerchantAuthorizationClient:
                 "redirect_uri": redirect_uri,
             }
             url = iHela_ENDPOINTS["BILL_INIT"]
-            bill_ = requests.post(self.get_url(url), data=bill_data, headers=self.get_auth_headers())
+            bill_ = requests.post(
+                self.get_url(url), data=bill_data, headers=self.get_auth_headers()
+            )
             bill_initiated = self.get_response(bill_)
 
             return bill_initiated
@@ -175,10 +181,14 @@ class MerchantAuthorizationClient:
 
 
 if __name__ == "__main__":
-    client_id = "5Q3Ew1mQiZBd4UmI3W7LrfkJlLxA4T4lPIX3lnxx"
-    client_secret = "9btvRN7VUsZMyCNddn1Zx1rIEUnX7ITsCH3YqgWRxfA0Za7aVHA2mlKnEU9m5Y7en3wQoAMDWBOqJ8QYVfFYnJmM8BYCB5tO9NIrkUOtDmvB3rYD0QyEWEFIsafqfx2J"
+    import os
 
-    cl = MerchantAuthorizationClient(client_id, client_secret, ihela_url="http://127.0.0.1:8080/")
+    client_id = os.environ.get("IHELA_CLIENT_ID", "YOUR_CLIENT_ID")
+    client_secret = os.environ.get("IHELA_CLIENT_SECRET", "YOUR_CLIENT_SECRET")
+
+    cl = MerchantAuthorizationClient(
+        client_id, client_secret, ihela_url="http://127.0.0.1:8080/"
+    )
     url = cl.get_authorization_url("http://127.0.0.1:4040/")
 
     print(url)

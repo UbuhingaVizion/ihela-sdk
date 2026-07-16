@@ -22,16 +22,51 @@ cl = MerchantClient(CLIENT_ID, CLIENT_SECRET, prod=PROD_ENV)
 redirect_uri = "https://yourapp.com/uri/to/redirect/to/"
 
 ```
-Set `PROD_ENV = True` for production, otherwise set it to `PROD_ENV = False`
+
+For asynchronous applications (FastAPI, async Django, etc.), use the `AsyncMerchantClient`:
+
+```python
+from ihela_client import AsyncMerchantClient
+
+async_cl = AsyncMerchantClient(CLIENT_ID, CLIENT_SECRET, prod=PROD_ENV)
+```
+
+Set `PROD_ENV = True` for production, otherwise set it to `PROD_ENV = False`.
 The `redirect_uri` must be registered with the client created by iHela both for test and production. This is not mandatory.
+
+### Exception Handling & Security
+
+The client raises structured exceptions on failures. In compliance with secure error-handling design (to prevent automated probing/leakage of internal resource states or permission structures), API errors are generic:
+
+```python
+from ihela_client import iHelaError, iHelaAPIError, iHelaAuthenticationError
+
+try:
+    bill = cl.init_bill(2000, "clientmail@gmail.com", "My description", "unique_reference")
+except iHelaAuthenticationError:
+    # Raised if client authentication to the gateway fails
+    print("Gateway authentication failed. Check credentials.")
+except iHelaAPIError as e:
+    # Raised on invalid inputs or gateway failures (obfuscates specifics for security)
+    print(f"iHela gateway request failed with HTTP status: {e.status_code}")
+except iHelaError:
+    # Base catch-all exception for client-level issues
+    pass
+```
 
 ### Bank list
 
 This returns the banks list for getting their slugs for the requests.
 
 ```python
-# cl.init_bill(AMOUNT, USER_EMAIL, TRANSACTION_DESCRIPTION, MERCHANT_REFERENCE, BANK, BANK_CLIENT_ID,redirect_uri=URL)
+# Get all banks
 banks = cl.get_bank_list()
+
+# Get banks for Cashin payments
+cashin_banks = cl.get_cashin_bank_list()
+
+# Get banks for Cashout payments
+cashout_banks = cl.get_cashout_bank_list()
 ```
 The bank list response gives the bank information that can help you provide a complete widget on your side (name, type, different codes, logo and icon, ...)
 
