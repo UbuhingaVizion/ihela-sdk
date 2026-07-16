@@ -6,6 +6,12 @@ import requests
 
 from .exceptions import iHelaAPIError, iHelaAuthenticationError
 from .merchant_client import iHela_BASE_TEST_URL, iHela_BASE_URL, iHela_TOKEN_URL
+from .security import (
+    DepositPayload,
+    ValidateWithdrawalPayload,
+    generate_signature,
+    mask_sensitive_data,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,11 +37,15 @@ class AgentClient:
         client_secret: str,
         prod: bool = False,
         ihela_url: str | None = None,
+        ssl_cert: Any | None = None,
+        signature_key: str | None = None,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
         self.auth_token_object = None
         self.prod_env = prod
+        self.ssl_cert = ssl_cert
+        self.signature_key = signature_key
         self.ihela_base_url = ihela_url or (
             iHela_BASE_URL if prod else iHela_BASE_TEST_URL
         )
@@ -49,7 +59,7 @@ class AgentClient:
             if not isinstance(resp_json, dict):
                 resp_json = {"data": resp_json}
             resp_json["response_status"] = resp.status_code
-            logger.debug(resp_json)
+            logger.debug(mask_sensitive_data(resp_json))
             return resp_json
         except (ValueError, KeyError, TypeError):
             logger.error(f"IHELA_CLIENT_ERROR : {resp.text}")
@@ -78,6 +88,8 @@ class AgentClient:
                 self.get_url(url),
                 auth=(self.client_id, self.client_secret),
                 data=auth_data,
+                cert=self.ssl_cert,
+                timeout=5.0,
             )
             if resp.status_code != 200:
                 raise iHelaAuthenticationError(
@@ -102,6 +114,8 @@ class AgentClient:
                 headers={
                     "Authorization": f"Bearer {self.auth_token_object['access_token']}"
                 },
+                cert=self.ssl_cert,
+                timeout=5.0,
             )
             if resp.status_code != 200:
                 raise iHelaAuthenticationError("Token refresh failed.")
@@ -124,14 +138,23 @@ class AgentClient:
 
     def ping(self) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["PING"]
-        resp = requests.get(self.get_url(url), headers=self.get_auth_headers())
+        resp = requests.get(
+            self.get_url(url),
+            headers=self.get_auth_headers(),
+            cert=self.ssl_cert,
+            timeout=5.0,
+        )
         return self.get_response(resp)
 
     def account_lookup(self, account_number: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["LOOKUP"]
         payload = {"account_number": account_number}
         resp = requests.post(
-            self.get_url(url), json=payload, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=payload,
+            headers=self.get_auth_headers(),
+            cert=self.ssl_cert,
+            timeout=5.0,
         )
         return self.get_response(resp)
 
@@ -139,7 +162,11 @@ class AgentClient:
         url = AGENT_ENDPOINTS["BALANCE"]
         payload = {"account_number": account_number}
         resp = requests.post(
-            self.get_url(url), json=payload, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=payload,
+            headers=self.get_auth_headers(),
+            cert=self.ssl_cert,
+            timeout=5.0,
         )
         return self.get_response(resp)
 
@@ -153,18 +180,31 @@ class AgentClient:
         pin_code: str,
         external_code: str = "",
     ) -> dict[str, Any]:
+        # Validate schema locally
+        validated = DepositPayload(
+            credit_account=credit_account,
+            credit_account_holder=credit_account_holder,
+            amount=amount,
+            description=description,
+            external_reference=external_reference,
+            pin_code=pin_code,
+            external_code=external_code,
+        )
+        payload = validated.model_dump()
         url = AGENT_ENDPOINTS["DEPOSIT"]
-        payload = {
-            "credit_account": credit_account,
-            "credit_account_holder": credit_account_holder,
-            "amount": amount,
-            "description": description,
-            "external_reference": external_reference,
-            "pin_code": pin_code,
-            "external_code": external_code,
-        }
+        headers = self.get_auth_headers()
+        if self.signature_key:
+            import json
+
+            signature = generate_signature(json.dumps(payload), self.signature_key)
+            headers["X-iHela-Signature"] = signature
+
         resp = requests.post(
-            self.get_url(url), json=payload, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=payload,
+            headers=headers,
+            cert=self.ssl_cert,
+            timeout=5.0,
         )
         return self.get_response(resp)
 
@@ -175,7 +215,11 @@ class AgentClient:
             "amount": amount,
         }
         resp = requests.post(
-            self.get_url(url), json=payload, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=payload,
+            headers=self.get_auth_headers(),
+            cert=self.ssl_cert,
+            timeout=5.0,
         )
         return self.get_response(resp)
 
@@ -188,17 +232,30 @@ class AgentClient:
         external_code: str,
         validation_operation_code: str,
     ) -> dict[str, Any]:
+        # Validate schema locally
+        validated = ValidateWithdrawalPayload(
+            external_reference=external_reference,
+            pin_code=pin_code,
+            agent_code=agent_code,
+            amount=amount,
+            external_code=external_code,
+            validation_operation_code=validation_operation_code,
+        )
+        payload = validated.model_dump()
         url = AGENT_ENDPOINTS["VALIDATE_WITHDRAWAL"]
-        payload = {
-            "external_reference": external_reference,
-            "pin_code": pin_code,
-            "agent_code": agent_code,
-            "amount": amount,
-            "external_code": external_code,
-            "validation_operation_code": validation_operation_code,
-        }
+        headers = self.get_auth_headers()
+        if self.signature_key:
+            import json
+
+            signature = generate_signature(json.dumps(payload), self.signature_key)
+            headers["X-iHela-Signature"] = signature
+
         resp = requests.post(
-            self.get_url(url), json=payload, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=payload,
+            headers=headers,
+            cert=self.ssl_cert,
+            timeout=5.0,
         )
         return self.get_response(resp)
 
@@ -211,7 +268,11 @@ class AgentClient:
             "reference": reference,
         }
         resp = requests.post(
-            self.get_url(url), json=payload, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=payload,
+            headers=self.get_auth_headers(),
+            cert=self.ssl_cert,
+            timeout=5.0,
         )
         return self.get_response(resp)
 
@@ -225,11 +286,15 @@ class AsyncAgentClient:
         client_secret: str,
         prod: bool = False,
         ihela_url: str | None = None,
+        ssl_cert: Any | None = None,
+        signature_key: str | None = None,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
         self.auth_token_object = None
         self.prod_env = prod
+        self.ssl_cert = ssl_cert
+        self.signature_key = signature_key
         self.ihela_base_url = ihela_url or (
             iHela_BASE_URL if prod else iHela_BASE_TEST_URL
         )
@@ -243,7 +308,7 @@ class AsyncAgentClient:
             if not isinstance(resp_json, dict):
                 resp_json = {"data": resp_json}
             resp_json["response_status"] = resp.status_code
-            logger.debug(resp_json)
+            logger.debug(mask_sensitive_data(resp_json))
             return resp_json
         except (ValueError, KeyError, TypeError):
             logger.error(f"IHELA_CLIENT_ERROR : {resp.text}")
@@ -267,7 +332,7 @@ class AsyncAgentClient:
     async def authenticate(self):
         url = iHela_TOKEN_URL
         auth_data = {"grant_type": "client_credentials"}
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             try:
                 resp = await client.post(
                     self.get_url(url),
@@ -290,7 +355,7 @@ class AsyncAgentClient:
 
         url = AGENT_ENDPOINTS["REFRESH"]
         refresh_data = {"refresh": self.auth_token_object["refresh_token"]}
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             try:
                 resp = await client.post(
                     self.get_url(url),
@@ -320,7 +385,7 @@ class AsyncAgentClient:
 
     async def ping(self) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["PING"]
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             headers = await self.get_auth_headers()
             resp = await client.get(self.get_url(url), headers=headers)
             return await self.get_response(resp)
@@ -328,7 +393,7 @@ class AsyncAgentClient:
     async def account_lookup(self, account_number: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["LOOKUP"]
         payload = {"account_number": account_number}
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             headers = await self.get_auth_headers()
             resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)
@@ -336,7 +401,7 @@ class AsyncAgentClient:
     async def account_balance(self, account_number: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["BALANCE"]
         payload = {"account_number": account_number}
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             headers = await self.get_auth_headers()
             resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)
@@ -351,18 +416,26 @@ class AsyncAgentClient:
         pin_code: str,
         external_code: str = "",
     ) -> dict[str, Any]:
+        # Validate schema locally
+        validated = DepositPayload(
+            credit_account=credit_account,
+            credit_account_holder=credit_account_holder,
+            amount=amount,
+            description=description,
+            external_reference=external_reference,
+            pin_code=pin_code,
+            external_code=external_code,
+        )
+        payload = validated.model_dump()
         url = AGENT_ENDPOINTS["DEPOSIT"]
-        payload = {
-            "credit_account": credit_account,
-            "credit_account_holder": credit_account_holder,
-            "amount": amount,
-            "description": description,
-            "external_reference": external_reference,
-            "pin_code": pin_code,
-            "external_code": external_code,
-        }
-        async with httpx.AsyncClient() as client:
-            headers = await self.get_auth_headers()
+        headers = await self.get_auth_headers()
+        if self.signature_key:
+            import json
+
+            signature = generate_signature(json.dumps(payload), self.signature_key)
+            headers["X-iHela-Signature"] = signature
+
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)
 
@@ -374,7 +447,7 @@ class AsyncAgentClient:
             "operation_code": operation_code,
             "amount": amount,
         }
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             headers = await self.get_auth_headers()
             resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)
@@ -388,17 +461,25 @@ class AsyncAgentClient:
         external_code: str,
         validation_operation_code: str,
     ) -> dict[str, Any]:
+        # Validate schema locally
+        validated = ValidateWithdrawalPayload(
+            external_reference=external_reference,
+            pin_code=pin_code,
+            agent_code=agent_code,
+            amount=amount,
+            external_code=external_code,
+            validation_operation_code=validation_operation_code,
+        )
+        payload = validated.model_dump()
         url = AGENT_ENDPOINTS["VALIDATE_WITHDRAWAL"]
-        payload = {
-            "external_reference": external_reference,
-            "pin_code": pin_code,
-            "agent_code": agent_code,
-            "amount": amount,
-            "external_code": external_code,
-            "validation_operation_code": validation_operation_code,
-        }
-        async with httpx.AsyncClient() as client:
-            headers = await self.get_auth_headers()
+        headers = await self.get_auth_headers()
+        if self.signature_key:
+            import json
+
+            signature = generate_signature(json.dumps(payload), self.signature_key)
+            headers["X-iHela-Signature"] = signature
+
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)
 
@@ -410,7 +491,7 @@ class AsyncAgentClient:
             "external_reference": external_reference,
             "reference": reference,
         }
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             headers = await self.get_auth_headers()
             resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)

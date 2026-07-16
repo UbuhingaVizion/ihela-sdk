@@ -37,7 +37,7 @@ def test_banking_client_withdrawal(mock_post):
     mock_post.side_effect = [mock_auth, mock_withdrawal]
 
     client = BankingClient("id", "secret")
-    res = client.withdrawal("debit", "holder", 1000.0, "desc", "ref", "pin")
+    res = client.withdrawal("DEBIT-1234", "holder", 1000.0, "desc", "REF-123", "1234")
     assert res["success"] is True
 
 
