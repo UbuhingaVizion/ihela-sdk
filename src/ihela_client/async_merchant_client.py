@@ -121,18 +121,23 @@ class AsyncMerchantClient:
         bank: str | None = None,
         bank_client_id: str | None = None,
         redirect_uri: str | None = None,
+        pin_code: str | None = None,
+        merchant_description: str | None = None,
+        payment_product_id: str | None = None,
     ) -> dict:
         await self.ensure_authenticated()
-        if bank and not bank_client_id:
-            bank_client_id = user
+        debit_account = user
+        debit_bank = bank
         bill_data = {
-            "amount": str(amount),
+            "debit_bank": debit_bank,
+            "debit_account": debit_account,
+            "amount": amount,
             "description": description,
+            "merchant_description": merchant_description or description,
             "merchant_reference": reference,
-            "user": user,
-            "bank": bank,
-            "bank_client_id": bank_client_id,
             "redirect_uri": redirect_uri,
+            "payment_product_id": payment_product_id,
+            "pin_code": pin_code,
         }
         bill_data = {k: v for k, v in bill_data.items() if v is not None}
         url = iHela_ENDPOINTS["BILL_INIT"]
@@ -140,20 +145,26 @@ class AsyncMerchantClient:
             headers = await self.get_auth_headers()
             resp = await client.post(
                 self.get_url(url),
-                data=bill_data,
+                json=bill_data,
                 headers=headers,
             )
             return await self.get_response(resp)
 
-    async def verify_bill(self, code: str, reference: str) -> dict:
+    async def verify_bill(
+        self, bill_code: str, merchant_reference: str, pin_code: str
+    ) -> dict:
         await self.ensure_authenticated()
-        bill_data = {"code": code, "reference": reference}
+        bill_data = {
+            "bill_code": bill_code,
+            "merchant_reference": merchant_reference,
+            "pin_code": pin_code,
+        }
         url = iHela_ENDPOINTS["BILL_VERIFY"]
         async with httpx.AsyncClient() as client:
             headers = await self.get_auth_headers()
             resp = await client.post(
                 self.get_url(url),
-                data=bill_data,
+                json=bill_data,
                 headers=headers,
             )
             return await self.get_response(resp)
@@ -165,21 +176,28 @@ class AsyncMerchantClient:
         amount: int,
         merchant_reference: str,
         description: str,
+        pin_code: str | None = None,
+        credit_account_holder: str | None = None,
+        currency: str = "BIF",
     ) -> dict:
         await self.ensure_authenticated()
         cashin_data = {
-            "bank_slug": bank_slug,
-            "account": account,
-            "amount": str(amount),
+            "credit_bank": bank_slug,
+            "credit_account": account,
+            "credit_account_holder": credit_account_holder or account,
+            "amount": amount,
             "merchant_reference": merchant_reference,
             "description": description,
+            "pin_code": pin_code,
+            "currency": currency,
         }
+        cashin_data = {k: v for k, v in cashin_data.items() if v is not None}
         url = iHela_ENDPOINTS["CASHIN"]
         async with httpx.AsyncClient() as client:
             headers = await self.get_auth_headers()
             resp = await client.post(
                 self.get_url(url),
-                data=cashin_data,
+                json=cashin_data,
                 headers=headers,
             )
             return await self.get_response(resp)

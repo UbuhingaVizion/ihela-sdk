@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 AGENT_ENDPOINTS = {
     "PING": "ihela/api/v1/ping/",
     "REFRESH": "ihela/api/v1/auth-token/refresh/",
+    "AUTH_TOKEN": "ihela/api/v1/auth-token/",
     "LOOKUP": "ihela/api/v1/account-lookup/",
     "BALANCE": "ihela/api/v1/bsces/balance/",
     "DEPOSIT": "ihela/api/v1/agent-deposit/",
@@ -135,6 +136,19 @@ class AgentClient:
     def ensure_authenticated(self):
         if not self.is_authenticated():
             self.authenticate()
+
+    def request_token(self, username: str, password: str) -> dict[str, Any]:
+        url = AGENT_ENDPOINTS["AUTH_TOKEN"]
+        payload = {"username": username, "password": password}
+        resp = requests.post(
+            self.get_url(url),
+            json=payload,
+            cert=self.ssl_cert,
+            timeout=5.0,
+        )
+        token_data = self.get_response(resp)
+        self.auth_token_object = token_data
+        return token_data
 
     def ping(self) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["PING"]
@@ -382,6 +396,15 @@ class AsyncAgentClient:
     async def ensure_authenticated(self):
         if not self.is_authenticated():
             await self.authenticate()
+
+    async def request_token(self, username: str, password: str) -> dict[str, Any]:
+        url = AGENT_ENDPOINTS["AUTH_TOKEN"]
+        payload = {"username": username, "password": password}
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = await client.post(self.get_url(url), json=payload)
+            token_data = await self.get_response(resp)
+            self.auth_token_object = token_data
+            return token_data
 
     async def ping(self) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["PING"]

@@ -19,12 +19,14 @@ logger = logging.getLogger(__name__)
 BANKING_ENDPOINTS = {
     "PING": "ihela/api/v1/ping/",
     "REFRESH": "ihela/api/v1/auth-token/refresh/",
+    "AUTH_TOKEN": "ihela/api/v1/auth-token/",
     "LOOKUP": "ihela/api/v1/account-lookup/",
     "BALANCE": "ihela/api/v1/bsces/balance/",
-    "DEPOSIT": "ihela/api/v1/agent-deposit/",
+    "DEPOSIT": "ihela/api/v1/make-deposit/",
     "WITHDRAWAL": "ihela/api/v1/make-withdrawal/",
     "STATEMENT": "ihela/api/v1/mini-statement/",
     "STATUS": "ihela/api/v1/transaction-status/",
+    "TRANSACTION_FEE": "ihela/api/v1/transaction-fee/",
 }
 
 
@@ -136,10 +138,41 @@ class BankingClient:
         if not self.is_authenticated():
             self.authenticate()
 
+    def request_token(self, username: str, password: str) -> dict[str, Any]:
+        url = BANKING_ENDPOINTS["AUTH_TOKEN"]
+        payload = {"username": username, "password": password}
+        resp = requests.post(
+            self.get_url(url),
+            json=payload,
+            cert=self.ssl_cert,
+            timeout=5.0,
+        )
+        token_data = self.get_response(resp)
+        self.auth_token_object = token_data
+        return token_data
+
     def ping(self) -> dict[str, Any]:
         url = BANKING_ENDPOINTS["PING"]
         resp = requests.get(
             self.get_url(url),
+            headers=self.get_auth_headers(),
+            cert=self.ssl_cert,
+            timeout=5.0,
+        )
+        return self.get_response(resp)
+
+    def transaction_fee(
+        self, currency: str, operation_type: str, amount: str
+    ) -> dict[str, Any]:
+        url = BANKING_ENDPOINTS["TRANSACTION_FEE"]
+        payload = {
+            "currency": currency,
+            "operation_type": operation_type,
+            "amount": amount,
+        }
+        resp = requests.post(
+            self.get_url(url),
+            json=payload,
             headers=self.get_auth_headers(),
             cert=self.ssl_cert,
             timeout=5.0,
@@ -379,11 +412,34 @@ class AsyncBankingClient:
         if not self.is_authenticated():
             await self.authenticate()
 
+    async def request_token(self, username: str, password: str) -> dict[str, Any]:
+        url = BANKING_ENDPOINTS["AUTH_TOKEN"]
+        payload = {"username": username, "password": password}
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = await client.post(self.get_url(url), json=payload)
+            token_data = await self.get_response(resp)
+            self.auth_token_object = token_data
+            return token_data
+
     async def ping(self) -> dict[str, Any]:
         url = BANKING_ENDPOINTS["PING"]
         async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
             headers = await self.get_auth_headers()
             resp = await client.get(self.get_url(url), headers=headers)
+            return await self.get_response(resp)
+
+    async def transaction_fee(
+        self, currency: str, operation_type: str, amount: str
+    ) -> dict[str, Any]:
+        url = BANKING_ENDPOINTS["TRANSACTION_FEE"]
+        payload = {
+            "currency": currency,
+            "operation_type": operation_type,
+            "amount": amount,
+        }
+        async with httpx.AsyncClient(cert=self.ssl_cert, timeout=5.0) as client:
+            headers = await self.get_auth_headers()
+            resp = await client.post(self.get_url(url), json=payload, headers=headers)
             return await self.get_response(resp)
 
     async def account_lookup(self, account_number: str) -> dict[str, Any]:
