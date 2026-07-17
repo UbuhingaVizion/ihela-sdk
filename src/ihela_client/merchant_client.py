@@ -132,29 +132,35 @@ class MerchantClient:
 
     def init_bill(
         self,
-        amount,
-        user,
-        description,
-        reference,
-        bank=None,
-        bank_client_id=None,
-        redirect_uri=None,
+        amount: int,
+        user: str,
+        description: str,
+        reference: str,
+        bank: str | None = None,
+        bank_client_id: str | None = None,
+        redirect_uri: str | None = None,
+        pin_code: str | None = None,
+        merchant_description: str | None = None,
+        payment_product_id: str | None = None,
     ):
         if self.is_authenticated():
-            if bank and not bank_client_id:
-                bank_client_id = user
+            debit_account = user
+            debit_bank = bank
             bill_data = {
+                "debit_bank": debit_bank,
+                "debit_account": debit_account,
                 "amount": amount,
                 "description": description,
+                "merchant_description": merchant_description or description,
                 "merchant_reference": reference,
-                "user": user,
-                "bank": bank,
-                "bank_client_id": bank_client_id,
                 "redirect_uri": redirect_uri,
+                "payment_product_id": payment_product_id,
+                "pin_code": pin_code,
             }
+            bill_data = {k: v for k, v in bill_data.items() if v is not None}
             url = iHela_ENDPOINTS["BILL_INIT"]
             bill_ = requests.post(
-                self.get_url(url), data=bill_data, headers=self.get_auth_headers()
+                self.get_url(url), json=bill_data, headers=self.get_auth_headers()
             )
             bill_initiated = self.get_response(bill_)
 
@@ -162,30 +168,46 @@ class MerchantClient:
         else:
             return {"errors": {"authentication": "The client is not authenticated"}}
 
-    def verify_bill(self, code, reference):
-        bill_data = {"code": code, "reference": reference}
+    def verify_bill(self, bill_code: str, merchant_reference: str, pin_code: str):
+        bill_data = {
+            "bill_code": bill_code,
+            "merchant_reference": merchant_reference,
+            "pin_code": pin_code,
+        }
         url = iHela_ENDPOINTS["BILL_VERIFY"]
         bill_ = requests.post(
-            self.get_url(url), data=bill_data, headers=self.get_auth_headers()
+            self.get_url(url), json=bill_data, headers=self.get_auth_headers()
         )
         bill_verified = self.get_response(bill_)
 
         return bill_verified
 
     def cashin_client(
-        self, bank_slug, account, amount, merchant_reference, description
+        self,
+        bank_slug: str,
+        account: str,
+        amount: int,
+        merchant_reference: str,
+        description: str,
+        pin_code: str | None = None,
+        credit_account_holder: str | None = None,
+        currency: str = "BIF",
     ):
         if self.is_authenticated():
             cashin_data = {
-                "bank_slug": bank_slug,
-                "account": account,
+                "credit_bank": bank_slug,
+                "credit_account": account,
+                "credit_account_holder": credit_account_holder or account,
                 "amount": amount,
                 "merchant_reference": merchant_reference,
                 "description": description,
+                "pin_code": pin_code,
+                "currency": currency,
             }
+            cashin_data = {k: v for k, v in cashin_data.items() if v is not None}
             url = iHela_ENDPOINTS["CASHIN"]
             cashin_ = requests.post(
-                self.get_url(url), data=cashin_data, headers=self.get_auth_headers()
+                self.get_url(url), json=cashin_data, headers=self.get_auth_headers()
             )
             cashin = self.get_response(cashin_)
 
@@ -247,7 +269,7 @@ if __name__ == "__main__":
 
     if bill["bill"].get("merchant_reference"):
         bill_verif = cl.verify_bill(
-            bill["bill"]["merchant_reference"], bill["bill"]["code"]
+            bill["bill"]["code"], bill["bill"]["merchant_reference"], "1234"
         )
 
         print("\nBILL VERIFY : ", bill_verif)

@@ -153,14 +153,17 @@ class MerchantAuthorizationClient:
     def bill_init(self, amount, description, reference, redirect_uri):
         if self.is_authenticated():
             bill_data = {
+                "debit_account": "",
                 "amount": amount,
                 "description": description,
+                "merchant_description": description,
                 "merchant_reference": reference,
                 "redirect_uri": redirect_uri,
+                "payment_product_id": None,
             }
             url = iHela_ENDPOINTS["BILL_INIT"]
             bill_ = requests.post(
-                self.get_url(url), data=bill_data, headers=self.get_auth_headers()
+                self.get_url(url), json=bill_data, headers=self.get_auth_headers()
             )
             bill_initiated = self.get_response(bill_)
 
@@ -171,10 +174,16 @@ class MerchantAuthorizationClient:
         else:
             return {"errors": {"authentication": "The client is not authenticated"}}
 
-    def bill_verify(self, code, reference, intern_reference=None):
-        bill_data = {"code": code, "reference": reference}
+    def bill_verify(self, bill_code, merchant_reference, pin_code=None):
+        bill_data = {
+            "bill_code": bill_code,
+            "merchant_reference": merchant_reference,
+            "pin_code": pin_code,
+        }
         url = iHela_ENDPOINTS["BILL_VERIFY"]
-        bill_ = requests.post(self.get_url(url), data=bill_data)
+        bill_ = requests.post(
+            self.get_url(url), json=bill_data, headers=self.get_auth_headers()
+        )
         bill_verified = self.get_response(bill_)
 
         return bill_verified
