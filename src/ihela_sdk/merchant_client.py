@@ -9,11 +9,8 @@ Python client for integration
 
 import json
 import logging
-
-try:
-    import secrets
-except ImportError:  # Python < 3.6
-    import random as secrets
+import secrets
+from typing import Any
 
 import requests
 
@@ -44,8 +41,8 @@ class MerchantClient:
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object = None
-        self.redirect_uri = None
+        self.auth_token_object: dict[str, Any] | None = None
+        self.redirect_uri: str | None = None
         self.state = state
         self.prod_env = prod
 
@@ -203,7 +200,7 @@ class MerchantClient:
         currency: str = "BIF",
     ):
         if self.is_authenticated():
-            cashin_data = {
+            cashin_data: dict[str, Any] = {
                 "credit_bank": bank_slug,
                 "credit_account": account,
                 "credit_account_holder": credit_account_holder or account,

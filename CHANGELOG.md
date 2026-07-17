@@ -1,6 +1,14 @@
 # Changelog
 
-## [0.1.0] - Unreleased
+## [0.1.1] - Unreleased
+
+### Fixed
+- Fix `mypy` type-check errors: properly annotate `auth_token_object` as `dict | None` across all clients
+- Remove dead `try/except ImportError` for `secrets` module (unreachable on Python 3.10+)
+- Fix CI `pkg_meta` job: install `twine` before running check
+- Fix CI `typecheck` job: add `[tool.mypy]` config with ignored missing stubs for `pydantic`, `httpx`, `django`, `allauth`
+
+## [0.1.0] - 2026-07-17
 
 ### Added
 - Initial release of `ihela-sdk` (migrated from `ihela-python-client`)

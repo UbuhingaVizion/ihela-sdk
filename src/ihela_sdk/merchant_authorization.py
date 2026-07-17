@@ -9,13 +9,10 @@ Python client for integration
 
 import json
 import logging
+import secrets
 import string
 import urllib.parse
-
-try:
-    import secrets
-except ImportError:  # Python < 3.6
-    import random as secrets
+from typing import Any
 
 import requests
 
@@ -41,9 +38,9 @@ class MerchantAuthorizationClient:
     def __init__(self, client_id, client_secret, state=None, prod=None, ihela_url=None):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object = None
-        self.user_object = None
-        self.redirect_uri = None
+        self.auth_token_object: dict[str, Any] | None = None
+        self.user_object: dict[str, Any] | None = None
+        self.redirect_uri: str | None = None
         self.state = state
         self.prod_env = prod
 
