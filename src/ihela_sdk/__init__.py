@@ -4,7 +4,13 @@ from .banking_client import AsyncBankingClient, BankingClient
 from .exceptions import iHelaAPIError, iHelaAuthenticationError, iHelaError
 from .merchant_authorization import MerchantAuthorizationClient
 from .merchant_client import MerchantClient
-from .security import generate_signature, mask_sensitive_data
+from .security import (
+    DepositPayload,
+    ValidateWithdrawalPayload,
+    WithdrawalPayload,
+    generate_signature,
+    mask_sensitive_data,
+)
 
 __all__ = [
     "MerchantAuthorizationClient",
@@ -19,6 +25,9 @@ __all__ = [
     "iHelaAPIError",
     "generate_signature",
     "mask_sensitive_data",
+    "DepositPayload",
+    "WithdrawalPayload",
+    "ValidateWithdrawalPayload",
 ]
 
-__version__ = "0.0.5"
+__version__ = "0.1.0"

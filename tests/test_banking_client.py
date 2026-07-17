@@ -1,7 +1,7 @@
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from ihela_client import AsyncBankingClient, BankingClient
+from ihela_sdk import AsyncBankingClient, BankingClient
 
 
 @patch("requests.post")

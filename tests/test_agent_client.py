@@ -1,7 +1,7 @@
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from ihela_client import AgentClient, AsyncAgentClient
+from ihela_sdk import AgentClient, AsyncAgentClient
 
 
 @patch("requests.post")
