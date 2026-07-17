@@ -107,8 +107,5 @@ module = [
     "django.*",
     "allauth.*",
     "httpx.*",
-    "httpcore.*",
-    "anyio.*",
-    "h11.*",
 ]
 ignore_missing_imports = true
