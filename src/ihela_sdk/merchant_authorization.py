@@ -35,10 +35,19 @@ iHela_ENDPOINTS = {
 class MerchantAuthorizationClient:
     provider_name = "iHelá"
 
-    def __init__(self, client_id, client_secret, state=None, prod=None, ihela_url=None):
+    def __init__(
+        self,
+        client_id,
+        client_secret,
+        state=None,
+        prod=None,
+        ihela_url=None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.user_object: dict[str, Any] | None = None
         self.redirect_uri: str | None = None
         self.state = state

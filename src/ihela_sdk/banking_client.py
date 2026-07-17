@@ -39,16 +39,20 @@ class BankingClient:
         ihela_url: str | None = None,
         ssl_cert: Any | None = None,
         signature_key: str | None = None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.prod_env = prod
         self.ssl_cert = ssl_cert
         self.signature_key = signature_key
         self.ihela_base_url = ihela_url or (
             iHela_BASE_URL if prod else iHela_BASE_TEST_URL
         )
+        if auto_auth and token is None:
+            self.authenticate()
 
     def get_url(self, url: str) -> str:
         return self.ihela_base_url + str(url)
@@ -300,10 +304,12 @@ class AsyncBankingClient:
         ihela_url: str | None = None,
         ssl_cert: Any | None = None,
         signature_key: str | None = None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.prod_env = prod
         self.ssl_cert = ssl_cert
         self.signature_key = signature_key

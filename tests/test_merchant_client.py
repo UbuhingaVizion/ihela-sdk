@@ -145,3 +145,29 @@ def test_get_bank_list(mock_post, mock_get):
     client = MerchantClient("client_id", "client_secret")
     banks = client.get_bank_list()
     assert len(banks["banks"]) == 2
+
+
+@patch("ihela_sdk.merchant_client.httpx.Client.post")
+def test_merchant_client_with_token(mock_post):
+    token = {"access_token": "injected_token", "token_type": "Bearer"}
+
+    client = MerchantClient("client_id", "client_secret", token=token)
+    assert client.is_authenticated() is True
+    assert client.get_access_token() == "injected_token"
+    assert client.get_auth_headers() == {"Authorization": "Bearer injected_token"}
+    mock_post.assert_not_called()
+
+
+@patch("ihela_sdk.merchant_client.httpx.Client.post")
+def test_merchant_client_no_auto_auth(mock_post):
+    client = MerchantClient("client_id", "client_secret", auto_auth=False)
+    assert client.is_authenticated() is False
+    mock_post.assert_not_called()
+
+    mock_resp = MagicMock()
+    mock_resp.status_code = 200
+    mock_resp.json.return_value = {"access_token": "lazy_token", "token_type": "Bearer"}
+    mock_post.return_value = mock_resp
+
+    assert client.get_auth_headers() == {"Authorization": "Bearer lazy_token"}
+    mock_post.assert_called_once()

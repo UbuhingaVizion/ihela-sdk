@@ -24,10 +24,12 @@ class AsyncMerchantClient:
         state: str | None = None,
         prod: bool = False,
         ihela_url: str | None = None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.state = state
         self.prod_env = prod
 

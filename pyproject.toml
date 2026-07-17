@@ -104,8 +104,6 @@ warn_unused_configs = true
 [[tool.mypy.overrides]]
 module = [
     "pydantic.*",
-    "django.*",
-    "allauth.*",
     "httpx.*",
 ]
 ignore_missing_imports = true
