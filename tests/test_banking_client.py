@@ -125,6 +125,52 @@ def test_banking_client_account_lookup(mock_post):
         assert mock_lp.call_args[1]["json"]["account_number"] == "76077736"
 
 
+def test_banking_client_with_token():
+    token = {"access_token": "injected_token", "token_type": "Bearer"}
+
+    with (
+        patch("ihela_sdk.banking_client.httpx.Client.post") as mock_post,
+        patch("ihela_sdk.banking_client.httpx.Client.get") as mock_get,
+    ):
+        mock_ping = MagicMock()
+        mock_ping.status_code = 200
+        mock_ping.json.return_value = {"success": True}
+        mock_get.return_value = mock_ping
+
+        client = BankingClient("id", "secret", token=token)
+        assert client.is_authenticated() is True
+        res = client.ping()
+        assert res["success"] is True
+        mock_post.assert_not_called()
+
+
+def test_banking_client_no_auto_auth():
+    with patch("ihela_sdk.banking_client.httpx.Client.post") as mock_post:
+        mock_auth = MagicMock()
+        mock_auth.status_code = 200
+        mock_auth.json.return_value = {"access_token": "token", "token_type": "Bearer"}
+        mock_post.return_value = mock_auth
+
+        client = BankingClient("id", "secret", auto_auth=False)
+        assert client.is_authenticated() is False
+        mock_post.assert_not_called()
+
+        headers = client.get_auth_headers()
+        assert headers == {"Authorization": "Bearer token"}
+        mock_post.assert_called_once()
+
+
+def test_async_banking_client_with_token():
+    async def run_test():
+        token = {"access_token": "injected", "token_type": "Bearer"}
+        client = AsyncBankingClient("id", "secret", token=token)
+        assert client.is_authenticated() is True
+        assert client.auth_token_object is not None
+        assert client.auth_token_object["access_token"] == "injected"
+
+    asyncio.run(run_test())
+
+
 def test_async_banking_client_ping():
     async def run_test():
         mock_auth = MagicMock()

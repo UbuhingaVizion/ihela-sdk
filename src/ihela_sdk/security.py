@@ -4,24 +4,36 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+_SENSITIVE_KEYS = {
+    "pin_code",
+    "access_token",
+    "refresh_token",
+    "client_secret",
+    "client_id",
+    "password",
+    "token",
+    "secret",
+    "api_key",
+    "authorization",
+}
+
 
 def mask_sensitive_data(data: Any) -> Any:
-    """Mask sensitive fields (pins, credentials, tokens) inside logging payloads."""
+    """Recursively mask sensitive fields (pins, credentials, tokens) in any data
+    structure. Handles nested dicts, lists, and common key patterns found in API
+    responses (e.g. ``response_data.pin_code``).
+
+    Used internally before logging to prevent credential and PIN leakage.
+    """
     if isinstance(data, dict):
-        masked = {}
+        masked: dict[str, Any] = {}
         for k, v in data.items():
-            if k in {
-                "pin_code",
-                "access_token",
-                "client_secret",
-                "refresh_token",
-                "client_id",
-            }:
+            if k in _SENSITIVE_KEYS:
                 masked[k] = "********"
             else:
                 masked[k] = mask_sensitive_data(v)
         return masked
-    elif isinstance(data, list):
+    if isinstance(data, list):
         return [mask_sensitive_data(item) for item in data]
     return data
 

@@ -24,10 +24,12 @@ class AsyncMerchantClient:
         state: str | None = None,
         prod: bool = False,
         ihela_url: str | None = None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.state = state
         self.prod_env = prod
 
@@ -96,6 +98,13 @@ class AsyncMerchantClient:
     async def ensure_authenticated(self):
         if not self.is_authenticated():
             await self.authenticate()
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     async def customer_lookup(
         self,

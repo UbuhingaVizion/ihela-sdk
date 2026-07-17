@@ -37,11 +37,18 @@ iHela_ENDPOINTS = {
 
 class MerchantClient:
     def __init__(
-        self, client_id, client_secret, state=None, prod=False, ihela_url=None
+        self,
+        client_id,
+        client_secret,
+        state=None,
+        prod=False,
+        ihela_url=None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.redirect_uri: str | None = None
         self.state = state
         self.prod_env = prod
@@ -60,7 +67,8 @@ class MerchantClient:
         else:
             self.ihela_base_url = iHela_BASE_TEST_URL
 
-        self.authenticate()
+        if auto_auth and token is None:
+            self.authenticate()
 
     def get_response(self, resp):
         try:
@@ -76,7 +84,9 @@ class MerchantClient:
         return self.ihela_base_url + str(url)
 
     def get_auth_headers(self):
+        self.ensure_authenticated()
         if self.is_authenticated():
+            assert self.auth_token_object is not None
             return {
                 "Authorization": "{} {}".format(
                     self.auth_token_object["token_type"],
@@ -85,12 +95,13 @@ class MerchantClient:
             }
         return {}
 
+    def ensure_authenticated(self):
+        if not self.is_authenticated():
+            self.authenticate()
+
     def authenticate(self):
         url = iHela_TOKEN_URL
         auth_data = {"grant_type": "client_credentials"}
-
-        if not self.prod_env:
-            logger.debug(auth_data)
 
         with httpx.Client(timeout=15.0) as client:
             auth_ = client.post(
@@ -116,6 +127,13 @@ class MerchantClient:
     def get_token_type(self):
         if self.is_authenticated():
             return self.auth_token_object["token_type"]
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     def customer_lookup(self, bank_slug, customer_id=None, account_number=None):
         url = iHela_ENDPOINTS["LOOKUP"] % bank_slug

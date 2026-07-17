@@ -17,6 +17,6 @@ Full documentation at https://UbuhingaVizion.github.io/ihela-sdk/
 
 - `Getting Started <https://UbuhingaVizion.github.io/ihela-sdk/getting-started/>`_
 - `API Reference <https://UbuhingaVizion.github.io/ihela-sdk/api/>`_
-- `Django Integration <https://UbuhingaVizion.github.io/ihela-sdk/django/>`_
+- `Authentication <https://UbuhingaVizion.github.io/ihela-sdk/authentication/>`_
 
 Repository: https://github.com/UbuhingaVizion/ihela-sdk

@@ -35,10 +35,19 @@ iHela_ENDPOINTS = {
 class MerchantAuthorizationClient:
     provider_name = "iHelá"
 
-    def __init__(self, client_id, client_secret, state=None, prod=None, ihela_url=None):
+    def __init__(
+        self,
+        client_id,
+        client_secret,
+        state=None,
+        prod=None,
+        ihela_url=None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
+    ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.user_object: dict[str, Any] | None = None
         self.redirect_uri: str | None = None
         self.state = state
@@ -107,9 +116,6 @@ class MerchantAuthorizationClient:
             "redirect_uri": redirect_uri,
         }
 
-        if not self.prod_env:
-            logger.debug(auth_data)
-
         with httpx.Client(timeout=15.0) as client:
             auth_ = client.post(self.get_url(url), data=auth_data)
         self.auth_token_object = self.get_response(auth_)
@@ -132,6 +138,14 @@ class MerchantAuthorizationClient:
     def get_token_type(self):
         if self.is_authenticated():
             return self.auth_token_object["token_type"]
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+        self.user_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     def get_user_info(self):
         if self.is_authenticated():

@@ -33,7 +33,7 @@ nav:
   - Home: index.md
   - Getting Started: getting-started.md
   - API Reference: api.md
-  - Django Integration: django.md
+  - Authentication: authentication.md
 
 markdown_extensions:
   - pymdownx.highlight:

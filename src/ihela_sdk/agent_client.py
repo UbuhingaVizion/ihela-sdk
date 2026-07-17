@@ -38,16 +38,20 @@ class AgentClient:
         ihela_url: str | None = None,
         ssl_cert: Any | None = None,
         signature_key: str | None = None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.prod_env = prod
         self.ssl_cert = ssl_cert
         self.signature_key = signature_key
         self.ihela_base_url = ihela_url or (
             iHela_BASE_URL if prod else iHela_BASE_TEST_URL
         )
+        if auto_auth and token is None:
+            self.authenticate()
 
     def get_url(self, url: str) -> str:
         return self.ihela_base_url + str(url)
@@ -133,6 +137,13 @@ class AgentClient:
     def ensure_authenticated(self):
         if not self.is_authenticated():
             self.authenticate()
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     def request_token(self, username: str, password: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["AUTH_TOKEN"]
@@ -286,10 +297,12 @@ class AsyncAgentClient:
         ihela_url: str | None = None,
         ssl_cert: Any | None = None,
         signature_key: str | None = None,
+        token: dict[str, Any] | None = None,
+        auto_auth: bool = True,
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object: dict[str, Any] | None = None
+        self.auth_token_object: dict[str, Any] | None = token
         self.prod_env = prod
         self.ssl_cert = ssl_cert
         self.signature_key = signature_key
@@ -381,6 +394,13 @@ class AsyncAgentClient:
     async def ensure_authenticated(self):
         if not self.is_authenticated():
             await self.authenticate()
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     async def request_token(self, username: str, password: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["AUTH_TOKEN"]

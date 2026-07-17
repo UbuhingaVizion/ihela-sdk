@@ -46,10 +46,6 @@ Documentation = "https://UbuhingaVizion.github.io/ihela-sdk/"
 Changelog = "https://github.com/UbuhingaVizion/ihela-sdk/releases"
 
 [project.optional-dependencies]
-django = [
-    "django>=5.2",
-    "django-allauth>=0.60.0",
-]
 docs = [
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.5.0",
@@ -93,7 +89,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-third-party = ["django", "allauth"]
+known-third-party = ["httpx"]
 
 [tool.mypy]
 python_version = "3.10"
@@ -104,8 +100,6 @@ warn_unused_configs = true
 [[tool.mypy.overrides]]
 module = [
     "pydantic.*",
-    "django.*",
-    "allauth.*",
     "httpx.*",
 ]
 ignore_missing_imports = true

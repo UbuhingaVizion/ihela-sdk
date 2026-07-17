@@ -2,6 +2,16 @@
 
 ## [0.2.0] - Unreleased
 
+### Added
+- **Token injection**: All clients accept optional `token` parameter to skip
+  authentication entirely. Pass `{"access_token": "...", "token_type": "Bearer"}`.
+- **Deferred authentication**: `auto_auth=False` parameter defers authentication
+  to the first API call — no HTTP call on `__init__`.
+- **`clear_token()`**: Explicit token cleanup method on all clients.
+- **Safe `__repr__`**: Client objects never expose credentials in string representations.
+- **Framework-agnostic OAuth2 guide**: Documentation shows OAuth2 integration
+  patterns for Django, Flask, and FastAPI without framework dependencies.
+
 ### Changed
 - **Dropped `requests` dependency**: All synchronous clients now use `httpx.Client`.
   This removes ~5 transitive dependencies (`certifi`, `urllib3`, `charset-normalizer`,
@@ -12,10 +22,23 @@
   context managers instead of bare `requests.post/get` calls.
 - `requests.RequestException` error handling replaced with `httpx.HTTPError`.
 
+### Removed
+- **Django views**: Removed `ihela_sdk.django` module. The SDK is now fully
+  framework-agnostic. Use `MerchantAuthorizationClient` directly with any web
+  framework (see Authentication guide).
+- **Django extra**: `pip install ihela-sdk[django]` no longer exists.
+
+### Security
+- Removed unsafe `logger.debug(auth_data)` that logged credentials in plaintext.
+- Extended `mask_sensitive_data()` to cover 10 sensitive key patterns (was 5).
+- Credentials never appear in `__repr__`, logs, or error messages.
+
 ### Fixed
 - Tox `d52`/`d60` environments: added `allowlist_externals = pytest` and
   explicit `pytest-cov` dependency.
 - Publish workflow: tags are now verified to be on `master` before publishing.
+- Docs theme updated to match iHelá branding (burgundy `#8A0625`).
+- Docs deploy now only triggers on `master` push with doc changes.
 
 ## [0.1.1] - 2026-07-17
 
