@@ -139,6 +139,13 @@ class BankingClient:
         if not self.is_authenticated():
             self.authenticate()
 
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
+
     def request_token(self, username: str, password: str) -> dict[str, Any]:
         url = BANKING_ENDPOINTS["AUTH_TOKEN"]
         payload = {"username": username, "password": password}
@@ -401,6 +408,13 @@ class AsyncBankingClient:
     async def ensure_authenticated(self):
         if not self.is_authenticated():
             await self.authenticate()
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     async def request_token(self, username: str, password: str) -> dict[str, Any]:
         url = BANKING_ENDPOINTS["AUTH_TOKEN"]

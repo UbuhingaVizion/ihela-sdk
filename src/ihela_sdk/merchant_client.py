@@ -103,9 +103,6 @@ class MerchantClient:
         url = iHela_TOKEN_URL
         auth_data = {"grant_type": "client_credentials"}
 
-        if not self.prod_env:
-            logger.debug(auth_data)
-
         with httpx.Client(timeout=15.0) as client:
             auth_ = client.post(
                 self.get_url(url),
@@ -130,6 +127,13 @@ class MerchantClient:
     def get_token_type(self):
         if self.is_authenticated():
             return self.auth_token_object["token_type"]
+
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
 
     def customer_lookup(self, bank_slug, customer_id=None, account_number=None):
         url = iHela_ENDPOINTS["LOOKUP"] % bank_slug

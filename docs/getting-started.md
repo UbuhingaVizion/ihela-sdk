@@ -121,6 +121,60 @@ except iHelaError:
 
 ---
 
+## Security
+
+### Credential Protection
+
+The SDK never logs client credentials or access tokens. All sensitive fields
+(`pin_code`, `access_token`, `client_secret`, `password`, etc.) in API responses
+are automatically masked with `********` before debug logging.
+
+Client objects have a safe `__repr__` that only shows the environment flag:
+
+```python
+>>> client
+<BankingClient prod_env=False>   # no credentials exposed
+```
+
+### Token Injection
+
+Skip authentication entirely by passing a pre-obtained token — no credentials
+are stored or transmitted:
+
+```python
+client = BankingClient("client_id", "client_secret",
+    token={"access_token": "...", "token_type": "Bearer"})
+```
+
+Or defer authentication to the first API call:
+
+```python
+client = BankingClient("client_id", "client_secret", auto_auth=False)
+# Token is acquired only when needed
+balance = client.account_balance("76077736")
+```
+
+### Token Lifecycle
+
+Clear a token from memory after use:
+
+```python
+client.clear_token()
+```
+
+### Request Signing
+
+For Banking and Agent clients, provide a `signature_key` to HMAC-SHA256 sign
+every deposit and withdrawal request:
+
+```python
+client = BankingClient("id", "secret", signature_key="your-signing-key")
+client.deposit(...)
+# Automatically adds X-iHela-Signature header
+```
+
+---
+
 ## Async Usage
 
 All clients have async counterparts. Use them in `asyncio` applications:

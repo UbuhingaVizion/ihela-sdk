@@ -23,7 +23,8 @@ synchronous and asynchronous clients backed by `httpx`.
 * **Type-Checked** — PEP 561 `py.typed` marker and full type annotations.
 * **Input Validation** — Pydantic models validate deposit, withdrawal, and
   validation payloads before they reach the gateway.
-* **Security** — HMAC-SHA256 request signing, sensitive field masking in debug logs.
+* **Security** — HMAC-SHA256 request signing, sensitive field masking in debug logs,
+  credential-safe `__repr__`, explicit token clearing.
 
 ---
 

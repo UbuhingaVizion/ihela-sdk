@@ -99,6 +99,13 @@ class AsyncMerchantClient:
         if not self.is_authenticated():
             await self.authenticate()
 
+    def clear_token(self):
+        """Remove the current access token from memory."""
+        self.auth_token_object = None
+
+    def __repr__(self):
+        return f"<{self.__class__.__name__} prod_env={self.prod_env}>"
+
     async def customer_lookup(
         self,
         bank_slug: str,

@@ -405,6 +405,60 @@ payload = DepositPayload(
 
 ---
 
+## Security
+
+### Sensitive Data Masking
+
+All API responses are automatically scanned before debug logging. The following
+fields are replaced with `********`:
+
+`pin_code`, `access_token`, `refresh_token`, `client_secret`, `client_id`,
+`password`, `token`, `secret`, `api_key`, `authorization`
+
+### Safe Object Representation
+
+`__repr__` never exposes credentials — it only shows the class name and
+environment flag:
+
+```python
+>>> client
+<BankingClient prod_env=False>
+```
+
+### Token Lifecycle
+
+All clients support `clear_token()` to remove the access token from memory:
+
+```python
+client.clear_token()  # auth_token_object is now None
+```
+
+### Token Injection
+
+Pass a pre-obtained token to skip authentication — no credentials are
+transmitted:
+
+```python
+client = BankingClient("id", "secret",
+    token={"access_token": "...", "token_type": "Bearer"})
+
+client = BankingClient("id", "secret", auto_auth=False)
+# Authenticates lazily on the first API call
+```
+
+### Request Signing
+
+Provide a `signature_key` to Banking or Agent clients to HMAC-SHA256 sign
+every deposit, withdrawal, and validation request:
+
+```python
+client = BankingClient("id", "secret", signature_key="your-key")
+client.deposit(...)
+# Adds X-iHela-Signature: <hmac-sha256-hex> header
+```
+
+---
+
 ## Endpoint Reference
 
 The SDK maps to the following iHela API endpoints:
