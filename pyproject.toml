@@ -34,7 +34,6 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
 dependencies = [
-    "requests>=2.22.0",
     "httpx>=0.25.0",
     "pydantic>=2.0.0",
 ]
@@ -94,7 +93,7 @@ ignore = [
 ]
 
 [tool.ruff.lint.isort]
-known-third-party = ["django", "allauth", "requests"]
+known-third-party = ["django", "allauth"]
 
 [tool.mypy]
 python_version = "3.10"
@@ -108,11 +107,6 @@ module = [
     "django.*",
     "allauth.*",
     "httpx.*",
-    "requests.*",
-    "certifi.*",
-    "charset_normalizer.*",
-    "idna.*",
-    "urllib3.*",
     "httpcore.*",
     "anyio.*",
     "h11.*",

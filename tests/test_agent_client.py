@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from ihela_sdk import AgentClient, AsyncAgentClient
 
 
-@patch("requests.post")
+@patch("ihela_sdk.agent_client.httpx.Client.post")
 def test_agent_client_ping(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -13,7 +13,7 @@ def test_agent_client_ping(mock_post):
 
     client = AgentClient("id", "secret")
 
-    with patch("requests.get") as mock_get:
+    with patch("ihela_sdk.agent_client.httpx.Client.get") as mock_get:
         mock_ping = MagicMock()
         mock_ping.status_code = 200
         mock_ping.json.return_value = {"success": True}
@@ -23,7 +23,7 @@ def test_agent_client_ping(mock_post):
         assert res["success"] is True
 
 
-@patch("requests.post")
+@patch("ihela_sdk.agent_client.httpx.Client.post")
 def test_agent_client_operations(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -43,7 +43,7 @@ def test_agent_client_operations(mock_post):
     assert res["validation_operation_code"] == "val-123"
 
 
-@patch("requests.post")
+@patch("ihela_sdk.agent_client.httpx.Client.post")
 def test_agent_client_request_token(mock_post):
     mock_token = MagicMock()
     mock_token.status_code = 200
@@ -57,7 +57,7 @@ def test_agent_client_request_token(mock_post):
     assert client.auth_token_object["access"] == "new_token"
 
 
-@patch("requests.post")
+@patch("ihela_sdk.agent_client.httpx.Client.post")
 def test_agent_client_deposit(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -77,7 +77,7 @@ def test_agent_client_deposit(mock_post):
     assert res["success"] is True
 
 
-@patch("requests.post")
+@patch("ihela_sdk.agent_client.httpx.Client.post")
 def test_agent_client_validate_withdrawal(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200

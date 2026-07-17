@@ -2,7 +2,6 @@ import logging
 from typing import Any
 
 import httpx
-import requests
 
 from .exceptions import iHelaAPIError, iHelaAuthenticationError
 from .merchant_client import iHela_BASE_TEST_URL, iHela_BASE_URL, iHela_TOKEN_URL
@@ -15,7 +14,6 @@ from .security import (
 
 logger = logging.getLogger(__name__)
 
-# Agent Service Endpoints
 AGENT_ENDPOINTS = {
     "PING": "ihela/api/v1/ping/",
     "REFRESH": "ihela/api/v1/auth-token/refresh/",
@@ -54,7 +52,7 @@ class AgentClient:
     def get_url(self, url: str) -> str:
         return self.ihela_base_url + str(url)
 
-    def get_response(self, resp: requests.Response) -> dict[str, Any]:
+    def get_response(self, resp: httpx.Response) -> dict[str, Any]:
         try:
             resp_json = resp.json()
             if not isinstance(resp_json, dict):
@@ -86,19 +84,18 @@ class AgentClient:
         url = iHela_TOKEN_URL
         auth_data = {"grant_type": "client_credentials"}
         try:
-            resp = requests.post(
-                self.get_url(url),
-                auth=(self.client_id, self.client_secret),
-                data=auth_data,
-                cert=self.ssl_cert,
-                timeout=5.0,
-            )
+            with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+                resp = client.post(
+                    self.get_url(url),
+                    auth=(self.client_id, self.client_secret),
+                    data=auth_data,
+                )
             if resp.status_code != 200:
                 raise iHelaAuthenticationError(
                     f"Authentication failed with status code {resp.status_code}"
                 )
             self.auth_token_object = self.get_response(resp)
-        except requests.RequestException as e:
+        except httpx.HTTPError as e:
             raise iHelaAuthenticationError(
                 f"Connection to iHela gateway failed: {e}"
             ) from e
@@ -110,20 +107,19 @@ class AgentClient:
         url = AGENT_ENDPOINTS["REFRESH"]
         refresh_data = {"refresh": self.auth_token_object["refresh_token"]}
         try:
-            resp = requests.post(
-                self.get_url(url),
-                data=refresh_data,
-                headers={
-                    "Authorization": f"Bearer {self.auth_token_object['access_token']}"
-                },
-                cert=self.ssl_cert,
-                timeout=5.0,
-            )
+            with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+                resp = client.post(
+                    self.get_url(url),
+                    data=refresh_data,
+                    headers={
+                        "Authorization": f"Bearer {self.auth_token_object['access_token']}"
+                    },
+                )
             if resp.status_code != 200:
                 raise iHelaAuthenticationError("Token refresh failed.")
             refresh_response = self.get_response(resp)
             self.auth_token_object["access_token"] = refresh_response["access"]
-        except requests.RequestException as e:
+        except httpx.HTTPError as e:
             raise iHelaAuthenticationError(
                 f"Connection failed during token refresh: {e}"
             ) from e
@@ -141,48 +137,41 @@ class AgentClient:
     def request_token(self, username: str, password: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["AUTH_TOKEN"]
         payload = {"username": username, "password": password}
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(self.get_url(url), json=payload)
         token_data = self.get_response(resp)
         self.auth_token_object = token_data
         return token_data
 
     def ping(self) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["PING"]
-        resp = requests.get(
-            self.get_url(url),
-            headers=self.get_auth_headers(),
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.get(
+                self.get_url(url),
+                headers=self.get_auth_headers(),
+            )
         return self.get_response(resp)
 
     def account_lookup(self, account_number: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["LOOKUP"]
         payload = {"account_number": account_number}
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            headers=self.get_auth_headers(),
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(
+                self.get_url(url),
+                json=payload,
+                headers=self.get_auth_headers(),
+            )
         return self.get_response(resp)
 
     def account_balance(self, account_number: str) -> dict[str, Any]:
         url = AGENT_ENDPOINTS["BALANCE"]
         payload = {"account_number": account_number}
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            headers=self.get_auth_headers(),
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(
+                self.get_url(url),
+                json=payload,
+                headers=self.get_auth_headers(),
+            )
         return self.get_response(resp)
 
     def deposit(
@@ -195,7 +184,6 @@ class AgentClient:
         pin_code: str,
         external_code: str = "",
     ) -> dict[str, Any]:
-        # Validate schema locally
         validated = DepositPayload(
             credit_account=credit_account,
             credit_account_holder=credit_account_holder,
@@ -214,13 +202,12 @@ class AgentClient:
             signature = generate_signature(json.dumps(payload), self.signature_key)
             headers["X-iHela-Signature"] = signature
 
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            headers=headers,
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(
+                self.get_url(url),
+                json=payload,
+                headers=headers,
+            )
         return self.get_response(resp)
 
     def operation_lookup(self, operation_code: str, amount: str) -> dict[str, Any]:
@@ -229,13 +216,12 @@ class AgentClient:
             "operation_code": operation_code,
             "amount": amount,
         }
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            headers=self.get_auth_headers(),
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(
+                self.get_url(url),
+                json=payload,
+                headers=self.get_auth_headers(),
+            )
         return self.get_response(resp)
 
     def validate_withdrawal(
@@ -247,7 +233,6 @@ class AgentClient:
         external_code: str,
         validation_operation_code: str,
     ) -> dict[str, Any]:
-        # Validate schema locally
         validated = ValidateWithdrawalPayload(
             external_reference=external_reference,
             pin_code=pin_code,
@@ -265,13 +250,12 @@ class AgentClient:
             signature = generate_signature(json.dumps(payload), self.signature_key)
             headers["X-iHela-Signature"] = signature
 
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            headers=headers,
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(
+                self.get_url(url),
+                json=payload,
+                headers=headers,
+            )
         return self.get_response(resp)
 
     def transaction_status(
@@ -282,13 +266,12 @@ class AgentClient:
             "external_reference": external_reference,
             "reference": reference,
         }
-        resp = requests.post(
-            self.get_url(url),
-            json=payload,
-            headers=self.get_auth_headers(),
-            cert=self.ssl_cert,
-            timeout=5.0,
-        )
+        with httpx.Client(cert=self.ssl_cert, timeout=5.0) as client:
+            resp = client.post(
+                self.get_url(url),
+                json=payload,
+                headers=self.get_auth_headers(),
+            )
         return self.get_response(resp)
 
 
@@ -441,7 +424,6 @@ class AsyncAgentClient:
         pin_code: str,
         external_code: str = "",
     ) -> dict[str, Any]:
-        # Validate schema locally
         validated = DepositPayload(
             credit_account=credit_account,
             credit_account_holder=credit_account_holder,
@@ -486,7 +468,6 @@ class AsyncAgentClient:
         external_code: str,
         validation_operation_code: str,
     ) -> dict[str, Any]:
-        # Validate schema locally
         validated = ValidateWithdrawalPayload(
             external_reference=external_reference,
             pin_code=pin_code,

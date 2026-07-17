@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from ihela_sdk import AsyncBankingClient, BankingClient
 
 
-@patch("requests.post")
+@patch("ihela_sdk.banking_client.httpx.Client.post")
 def test_banking_client_ping(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -13,7 +13,7 @@ def test_banking_client_ping(mock_post):
 
     client = BankingClient("id", "secret")
 
-    with patch("requests.get") as mock_get:
+    with patch("ihela_sdk.banking_client.httpx.Client.get") as mock_get:
         mock_ping = MagicMock()
         mock_ping.status_code = 200
         mock_ping.json.return_value = {"success": True}
@@ -23,7 +23,7 @@ def test_banking_client_ping(mock_post):
         assert res["success"] is True
 
 
-@patch("requests.post")
+@patch("ihela_sdk.banking_client.httpx.Client.post")
 def test_banking_client_withdrawal(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -40,7 +40,7 @@ def test_banking_client_withdrawal(mock_post):
     assert res["success"] is True
 
 
-@patch("requests.post")
+@patch("ihela_sdk.banking_client.httpx.Client.post")
 def test_banking_client_deposit(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -65,7 +65,7 @@ def test_banking_client_deposit(mock_post):
     )
 
 
-@patch("requests.post")
+@patch("ihela_sdk.banking_client.httpx.Client.post")
 def test_banking_client_request_token(mock_post):
     mock_token = MagicMock()
     mock_token.status_code = 200
@@ -79,7 +79,7 @@ def test_banking_client_request_token(mock_post):
     assert client.auth_token_object["access"] == "new_token"
 
 
-@patch("requests.post")
+@patch("ihela_sdk.banking_client.httpx.Client.post")
 def test_banking_client_transaction_fee(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -92,7 +92,9 @@ def test_banking_client_transaction_fee(mock_post):
     mock_fee.status_code = 200
     mock_fee.json.return_value = {"success": True, "response_data": {"fee": "100"}}
 
-    with patch("requests.post", return_value=mock_fee) as mock_fee_post:
+    with patch(
+        "ihela_sdk.banking_client.httpx.Client.post", return_value=mock_fee
+    ) as mock_fee_post:
         res = client.transaction_fee("BIF", "withdrawal", "4000")
         assert res["response_data"]["fee"] == "100"
 
@@ -102,7 +104,7 @@ def test_banking_client_transaction_fee(mock_post):
         assert call_kwargs["json"]["amount"] == "4000"
 
 
-@patch("requests.post")
+@patch("ihela_sdk.banking_client.httpx.Client.post")
 def test_banking_client_account_lookup(mock_post):
     mock_auth = MagicMock()
     mock_auth.status_code = 200
@@ -115,7 +117,9 @@ def test_banking_client_account_lookup(mock_post):
     mock_lookup.status_code = 200
     mock_lookup.json.return_value = {"success": True}
 
-    with patch("requests.post", return_value=mock_lookup) as mock_lp:
+    with patch(
+        "ihela_sdk.banking_client.httpx.Client.post", return_value=mock_lookup
+    ) as mock_lp:
         res = client.account_lookup("76077736")
         assert res["success"] is True
         assert mock_lp.call_args[1]["json"]["account_number"] == "76077736"
