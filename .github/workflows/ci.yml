@@ -111,4 +111,4 @@ jobs:
         run: uv python install 3.13
 
       - name: Build and check
-        run: uv build && uv run twine check dist/*
+        run: uv build && uv run --with twine twine check dist/*

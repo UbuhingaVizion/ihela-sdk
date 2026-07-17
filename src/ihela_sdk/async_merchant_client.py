@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 import httpx
 
@@ -26,7 +27,7 @@ class AsyncMerchantClient:
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object = None
+        self.auth_token_object: dict[str, Any] | None = None
         self.state = state
         self.prod_env = prod
 
@@ -56,6 +57,7 @@ class AsyncMerchantClient:
     async def get_auth_headers(self) -> dict[str, str]:
         await self.ensure_authenticated()
         if self.is_authenticated():
+            assert self.auth_token_object is not None
             return {
                 "Authorization": "{} {}".format(
                     self.auth_token_object["token_type"],

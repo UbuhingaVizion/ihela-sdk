@@ -44,7 +44,7 @@ class BankingClient:
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object = None
+        self.auth_token_object: dict[str, Any] | None = None
         self.prod_env = prod
         self.ssl_cert = ssl_cert
         self.signature_key = signature_key
@@ -74,6 +74,7 @@ class BankingClient:
     def get_auth_headers(self) -> dict[str, str]:
         self.ensure_authenticated()
         if self.is_authenticated():
+            assert self.auth_token_object is not None
             return {
                 "Authorization": "{} {}".format(
                     self.auth_token_object["token_type"],
@@ -320,7 +321,7 @@ class AsyncBankingClient:
     ):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.auth_token_object = None
+        self.auth_token_object: dict[str, Any] | None = None
         self.prod_env = prod
         self.ssl_cert = ssl_cert
         self.signature_key = signature_key
@@ -350,6 +351,7 @@ class AsyncBankingClient:
     async def get_auth_headers(self) -> dict[str, str]:
         await self.ensure_authenticated()
         if self.is_authenticated():
+            assert self.auth_token_object is not None
             return {
                 "Authorization": "{} {}".format(
                     self.auth_token_object["token_type"],
