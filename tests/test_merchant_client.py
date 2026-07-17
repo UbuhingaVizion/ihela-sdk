@@ -1,9 +1,9 @@
 from unittest.mock import MagicMock, patch
 
-from ihela_client import MerchantClient
+from ihela_sdk import MerchantClient
 
 
-@patch("ihela_client.merchant_client.requests.post")
+@patch("ihela_sdk.merchant_client.requests.post")
 def test_merchant_client_init(mock_post):
     mock_resp = MagicMock()
     mock_resp.status_code = 200
@@ -16,7 +16,7 @@ def test_merchant_client_init(mock_post):
     assert client.get_auth_headers() == {"Authorization": "Bearer test_token"}
 
 
-@patch("ihela_client.merchant_client.requests.post")
+@patch("ihela_sdk.merchant_client.requests.post")
 def test_init_bill(mock_post):
     mock_auth_resp = MagicMock()
     mock_auth_resp.status_code = 200
@@ -52,7 +52,7 @@ def test_init_bill(mock_post):
     assert call_kwargs["json"]["pin_code"] == "1234"
 
 
-@patch("ihela_client.merchant_client.requests.post")
+@patch("ihela_sdk.merchant_client.requests.post")
 def test_verify_bill(mock_post):
     mock_auth_resp = MagicMock()
     mock_auth_resp.status_code = 200
@@ -88,7 +88,7 @@ def test_verify_bill(mock_post):
     assert call_kwargs["json"]["pin_code"] == "1234"
 
 
-@patch("ihela_client.merchant_client.requests.post")
+@patch("ihela_sdk.merchant_client.requests.post")
 def test_cashin_client(mock_post):
     mock_auth_resp = MagicMock()
     mock_auth_resp.status_code = 200
@@ -126,8 +126,8 @@ def test_cashin_client(mock_post):
     assert call_kwargs["json"]["pin_code"] == "1234"
 
 
-@patch("ihela_client.merchant_client.requests.get")
-@patch("ihela_client.merchant_client.requests.post")
+@patch("ihela_sdk.merchant_client.requests.get")
+@patch("ihela_sdk.merchant_client.requests.post")
 def test_get_bank_list(mock_post, mock_get):
     mock_auth_resp = MagicMock()
     mock_auth_resp.status_code = 200

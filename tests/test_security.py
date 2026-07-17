@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from ihela_client.security import (
+from ihela_sdk.security import (
     DepositPayload,
     WithdrawalPayload,
     generate_signature,
@@ -13,9 +13,7 @@ def test_generate_signature():
     payload = '{"amount": 1000, "credit_account": "ACT123"}'
     key = "super_secret_signing_key"
     sig = generate_signature(payload, key)
-    # The signature should be a valid SHA-256 hex string (64 characters)
     assert len(sig) == 64
-    # Re-generating with same inputs should be deterministic
     assert sig == generate_signature(payload, key)
 
 
@@ -38,7 +36,6 @@ def test_mask_sensitive_data():
 
 
 def test_deposit_payload_validation():
-    # Valid payload
     payload = DepositPayload(
         credit_account="ACT-1234",
         credit_account_holder="John Doe",
@@ -50,7 +47,6 @@ def test_deposit_payload_validation():
     )
     assert payload.amount == 1500.50
 
-    # Invalid amount (must be > 0)
     with pytest.raises(ValidationError):
         DepositPayload(
             credit_account="ACT-1234",
@@ -61,7 +57,6 @@ def test_deposit_payload_validation():
             pin_code="1234",
         )
 
-    # Invalid PIN (must be numeric)
     with pytest.raises(ValidationError):
         DepositPayload(
             credit_account="ACT-1234",
@@ -74,7 +69,6 @@ def test_deposit_payload_validation():
 
 
 def test_withdrawal_payload_validation():
-    # Valid payload
     payload = WithdrawalPayload(
         debit_account="ACT-5678",
         debit_account_holder="Jane Doe",
@@ -85,7 +79,6 @@ def test_withdrawal_payload_validation():
     )
     assert payload.pin_code == "9876"
 
-    # Invalid debit account format (regex check)
     with pytest.raises(ValidationError):
         WithdrawalPayload(
             debit_account="invalid_account_#",

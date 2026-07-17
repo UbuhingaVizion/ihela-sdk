@@ -93,11 +93,13 @@ class MerchantClient:
         auth_data = {"grant_type": "client_credentials"}
 
         if not self.prod_env:
-            # TODO : Delete this line for production
             logger.debug(auth_data)
 
         auth_ = requests.post(
-            self.get_url(url), auth=(self.client_id, self.client_secret), data=auth_data
+            self.get_url(url),
+            auth=(self.client_id, self.client_secret),
+            data=auth_data,
+            timeout=15.0,
         )
         self.auth_token_object = self.get_response(auth_)
 
@@ -114,7 +116,7 @@ class MerchantClient:
         if self.is_authenticated():
             return self.auth_token_object["access_token"]
 
-    def get_token_type(self, code):
+    def get_token_type(self):
         if self.is_authenticated():
             return self.auth_token_object["token_type"]
 
@@ -125,6 +127,7 @@ class MerchantClient:
             self.get_url(url),
             params={"account_number": query_param},
             headers=self.get_auth_headers(),
+            timeout=15.0,
         )
         customer_info = self.get_response(customer_info_)
 
@@ -160,7 +163,10 @@ class MerchantClient:
             bill_data = {k: v for k, v in bill_data.items() if v is not None}
             url = iHela_ENDPOINTS["BILL_INIT"]
             bill_ = requests.post(
-                self.get_url(url), json=bill_data, headers=self.get_auth_headers()
+                self.get_url(url),
+                json=bill_data,
+                headers=self.get_auth_headers(),
+                timeout=15.0,
             )
             bill_initiated = self.get_response(bill_)
 
@@ -176,7 +182,10 @@ class MerchantClient:
         }
         url = iHela_ENDPOINTS["BILL_VERIFY"]
         bill_ = requests.post(
-            self.get_url(url), json=bill_data, headers=self.get_auth_headers()
+            self.get_url(url),
+            json=bill_data,
+            headers=self.get_auth_headers(),
+            timeout=15.0,
         )
         bill_verified = self.get_response(bill_)
 
@@ -207,7 +216,10 @@ class MerchantClient:
             cashin_data = {k: v for k, v in cashin_data.items() if v is not None}
             url = iHela_ENDPOINTS["CASHIN"]
             cashin_ = requests.post(
-                self.get_url(url), json=cashin_data, headers=self.get_auth_headers()
+                self.get_url(url),
+                json=cashin_data,
+                headers=self.get_auth_headers(),
+                timeout=15.0,
             )
             cashin = self.get_response(cashin_)
 
@@ -218,7 +230,9 @@ class MerchantClient:
     def get_bank_list(self):
         if self.is_authenticated():
             url = iHela_ENDPOINTS["BANKS_ALL"]
-            banks_ = requests.get(self.get_url(url), headers=self.get_auth_headers())
+            banks_ = requests.get(
+                self.get_url(url), headers=self.get_auth_headers(), timeout=15.0
+            )
             banks = self.get_response(banks_)
 
             return banks
@@ -228,7 +242,9 @@ class MerchantClient:
     def get_cashin_bank_list(self):
         if self.is_authenticated():
             url = iHela_ENDPOINTS["BANKS_CASHIN"]
-            banks_ = requests.get(self.get_url(url), headers=self.get_auth_headers())
+            banks_ = requests.get(
+                self.get_url(url), headers=self.get_auth_headers(), timeout=15.0
+            )
             banks = self.get_response(banks_)
 
             return banks
@@ -238,7 +254,9 @@ class MerchantClient:
     def get_cashout_bank_list(self):
         if self.is_authenticated():
             url = iHela_ENDPOINTS["BANKS_CASHOUT"]
-            banks_ = requests.get(self.get_url(url), headers=self.get_auth_headers())
+            banks_ = requests.get(
+                self.get_url(url), headers=self.get_auth_headers(), timeout=15.0
+            )
             banks = self.get_response(banks_)
 
             return banks

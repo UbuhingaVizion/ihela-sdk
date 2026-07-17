@@ -1,7 +1,7 @@
-site_name: iHela Client
-site_url: https://ubuviz.github.io/ihela-python-client/
-repo_url: https://github.com/ubuviz/ihela-pyhton-client
-repo_name: ubuviz/ihela-pyhton-client
+site_name: iHela SDK
+site_url: https://UbuhingaVizion.github.io/ihela-sdk/
+repo_url: https://github.com/UbuhingaVizion/ihela-sdk
+repo_name: UbuhingaVizion/ihela-sdk
 
 theme:
   name: material

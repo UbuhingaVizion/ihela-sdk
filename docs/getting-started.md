@@ -5,21 +5,21 @@
 You can install the package directly using `pip`:
 
 ```bash
-pip install ihela-python-client
+pip install ihela-sdk
 ```
 
 If you are using Django, you can install the library with the optional `django` dependencies:
 
 ```bash
-pip install "ihela-python-client[django]"
+pip install "ihela-sdk[django]"
 ```
 
 Or using `uv`:
 
 ```bash
-uv add ihela-python-client
+uv add ihela-sdk
 # with django extra
-uv add "ihela-python-client[django]"
+uv add "ihela-sdk[django]"
 ```
 
 ---
@@ -29,7 +29,7 @@ uv add "ihela-python-client[django]"
 To communicate with the iHela API, initialize a `MerchantClient` instance with your credentials:
 
 ```python
-from ihela_client import MerchantClient
+from ihela_sdk import MerchantClient
 
 CLIENT_ID = "your_client_id"
 CLIENT_SECRET = "your_client_secret"

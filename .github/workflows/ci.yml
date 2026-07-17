@@ -12,25 +12,13 @@ on:
       - develop
 
 jobs:
-  tox:
-    name: Run ${{ matrix.toxenv }}
+  test:
+    name: Test py${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        toxenv: [lint, d52, d60, docs, pkg_meta]
-        include:
-          - toxenv: lint
-            python-version: "3.13"
-          - toxenv: d52
-            python-version: "3.13"
-          - toxenv: d60
-            python-version: "3.13"
-          - toxenv: docs
-            python-version: "3.13"
-          - toxenv: pkg_meta
-            python-version: "3.13"
-
+        python-version: ["3.10", "3.13"]
     steps:
       - uses: actions/checkout@v4
 
@@ -45,5 +33,82 @@ jobs:
       - name: Install dependencies
         run: uv sync --all-extras
 
-      - name: Run tox environment
-        run: uv run tox -e ${{ matrix.toxenv }}
+      - name: Run tests
+        run: uv run pytest tests/ -vv
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run ruff
+        run: uv run ruff check src/ tests/
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install dependencies
+        run: uv sync --all-extras && uv run pip install mypy
+
+      - name: Run mypy
+        run: uv run mypy src/
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install dependencies
+        run: uv sync --extra docs
+
+      - name: Build docs
+        run: uv run mkdocs build
+
+  pkg_meta:
+    name: Package Metadata
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Build and check
+        run: uv build && uv run twine check dist/*

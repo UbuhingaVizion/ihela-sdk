@@ -4,7 +4,7 @@ The client library includes pre-configured Django views that plug into the `djan
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 First, configure your environment settings in your Django `settings.py`:
 
@@ -14,7 +14,7 @@ INSTALLED_APPS = [
     ...
     'allauth',
     'allauth.socialaccount',
-    'ihela_client.django',  # Register the ihela_client django module
+    'ihela_sdk.django',  # Register the ihela_sdk django module
 ]
 
 IHELA_TEST_ENV = True  # True for sandbox, False for production
@@ -23,12 +23,12 @@ OAUTH_IHELA_SERVER_BASEURL = "https://testgate.ihela.online"
 
 ---
 
-## 💻 Views
+## Views
 
 Import the built-in view classes to handle user authentication:
 
 ```python
-from ihela_client.django.views import iHelaClientBaseView, iHelaClientCodeView
+from ihela_sdk.django.views import iHelaClientBaseView, iHelaClientCodeView
 
 # Extend these classes inside your application views to override logic
 # and implement get_payment_object():

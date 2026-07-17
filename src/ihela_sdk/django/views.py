@@ -1,9 +1,14 @@
-from allauth.socialaccount.models import SocialLogin
-from allauth.socialaccount.providers.oauth2.views import OAuth2View
+try:
+    from allauth.socialaccount.models import SocialLogin
+    from allauth.socialaccount.providers.oauth2.views import OAuth2View
+except ImportError:
+    SocialLogin = None  # type: ignore
+    OAuth2View = object  # type: ignore
+
 from django.conf import settings
 from django.http import HttpResponseNotAllowed
 
-from ihela_client import MerchantAuthorizationClient as iHelaAPIClient
+from ihela_sdk import MerchantAuthorizationClient as iHelaAPIClient
 
 
 class iHelaClientBaseView(OAuth2View):
@@ -26,7 +31,7 @@ class iHelaClientBaseView(OAuth2View):
     def get_client(self, request, app):
         client_id = getattr(app, "client_id", getattr(app, "consumer_key", None))
         client_secret = getattr(app, "secret", getattr(app, "consumer_secret", None))
-        test_env = getattr(settings, "IHELA_TEST_ENV", True)
+        prod_env = not getattr(settings, "IHELA_TEST_ENV", True)
         ihela_url = (
             getattr(
                 settings, "OAUTH_IHELA_SERVER_BASEURL", "https://testgate.ihela.online"
@@ -37,7 +42,7 @@ class iHelaClientBaseView(OAuth2View):
             client_id,
             client_secret,
             state=None,
-            test=test_env,
+            prod=prod_env,
             ihela_url=ihela_url,
         )
 

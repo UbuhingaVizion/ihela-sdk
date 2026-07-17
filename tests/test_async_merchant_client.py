@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from ihela_client import AsyncMerchantClient, iHelaAPIError, iHelaAuthenticationError
+from ihela_sdk import AsyncMerchantClient, iHelaAPIError, iHelaAuthenticationError
 
 
 def test_async_merchant_client_init():

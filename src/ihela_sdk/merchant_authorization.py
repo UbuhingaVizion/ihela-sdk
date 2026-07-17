@@ -38,20 +38,20 @@ iHela_ENDPOINTS = {
 class MerchantAuthorizationClient:
     provider_name = "iHelá"
 
-    def __init__(
-        self, client_id, client_secret, state=None, test=False, ihela_url=None
-    ):
+    def __init__(self, client_id, client_secret, state=None, prod=None, ihela_url=None):
         self.client_id = client_id
         self.client_secret = client_secret
         self.auth_token_object = None
         self.user_object = None
         self.redirect_uri = None
         self.state = state
-        self.test_env = test
+        self.prod_env = prod
 
         self.ihela_base_url = iHela_BASE_URL
-        if self.test_env:
+        if self.prod_env is False:
             self.ihela_base_url = iHela_BASE_TEST_URL
+        if self.prod_env is True:
+            self.ihela_base_url = iHela_BASE_URL
         if ihela_url:
             self.ihela_base_url = ihela_url
 
@@ -114,8 +114,7 @@ class MerchantAuthorizationClient:
             # "password": password,
         }
 
-        if self.test_env:
-            # TODO : Delete this line for production
+        if not self.prod_env:
             logger.debug(auth_data)
 
         auth_ = requests.post(self.get_url(url), data=auth_data)
@@ -136,7 +135,7 @@ class MerchantAuthorizationClient:
         if self.is_authenticated():
             return self.auth_token_object["access_token"]
 
-    def get_token_type(self, code):
+    def get_token_type(self):
         if self.is_authenticated():
             return self.auth_token_object["token_type"]
 
