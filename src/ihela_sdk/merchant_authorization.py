@@ -14,7 +14,7 @@ import string
 import urllib.parse
 from typing import Any
 
-import requests
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -91,12 +91,10 @@ class MerchantAuthorizationClient:
             "client_id": self.client_id,
             "redirect_uri": urllib.parse.quote(redirect_uri),
         }
-        # auth_parms = urllib.parse.urlencode(auth_dict)
         auth_parms = "state={state}&response_type={response_type}&client_id={client_id}&redirect_uri={redirect_uri}".format(
             **auth_dict
         )
 
-        # return requests.utils.requote_uri(self.get_url(iHela_AUTH_URL) + "?" + auth_parms)
         return self.get_url(iHela_AUTH_URL) + "?" + auth_parms
 
     def authenticate(self, authorization_code, redirect_uri):
@@ -107,14 +105,13 @@ class MerchantAuthorizationClient:
             "client_id": self.client_id,
             "client_secret": self.client_secret,
             "redirect_uri": redirect_uri,
-            # "username": username,
-            # "password": password,
         }
 
         if not self.prod_env:
             logger.debug(auth_data)
 
-        auth_ = requests.post(self.get_url(url), data=auth_data)
+        with httpx.Client(timeout=15.0) as client:
+            auth_ = client.post(self.get_url(url), data=auth_data)
         self.auth_token_object = self.get_response(auth_)
 
         self.get_user_info()
@@ -140,7 +137,8 @@ class MerchantAuthorizationClient:
         if self.is_authenticated():
             url = iHela_ENDPOINTS["USER_INFO"]
 
-            user_ = requests.get(self.get_url(url), headers=self.get_auth_headers())
+            with httpx.Client(timeout=15.0) as client:
+                user_ = client.get(self.get_url(url), headers=self.get_auth_headers())
             self.user_object = self.get_response(user_)
 
             return self.user_object
@@ -158,15 +156,13 @@ class MerchantAuthorizationClient:
                 "payment_product_id": None,
             }
             url = iHela_ENDPOINTS["BILL_INIT"]
-            bill_ = requests.post(
-                self.get_url(url), json=bill_data, headers=self.get_auth_headers()
-            )
+            with httpx.Client(timeout=15.0) as client:
+                bill_ = client.post(
+                    self.get_url(url), json=bill_data, headers=self.get_auth_headers()
+                )
             bill_initiated = self.get_response(bill_)
 
             return bill_initiated
-
-            # TODO: Make further verifications to `bill_data` for better handling. e.g. amount type, max_lengths,...
-            # TODO: Make try...except on requests.post to return other cool errors...
         else:
             return {"errors": {"authentication": "The client is not authenticated"}}
 
@@ -177,9 +173,10 @@ class MerchantAuthorizationClient:
             "pin_code": pin_code,
         }
         url = iHela_ENDPOINTS["BILL_VERIFY"]
-        bill_ = requests.post(
-            self.get_url(url), json=bill_data, headers=self.get_auth_headers()
-        )
+        with httpx.Client(timeout=15.0) as client:
+            bill_ = client.post(
+                self.get_url(url), json=bill_data, headers=self.get_auth_headers()
+            )
         bill_verified = self.get_response(bill_)
 
         return bill_verified
