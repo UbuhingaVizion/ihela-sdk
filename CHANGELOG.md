@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.0] - Unreleased
+## [0.3.0] - 2026-07-17
 
 ### Added
 - **Token injection**: All clients accept optional `token` parameter to skip
