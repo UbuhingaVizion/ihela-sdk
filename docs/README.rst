@@ -1,14 +1,22 @@
-iHela Client
-============
+iHela SDK
+========
 
-This repository provides a Python client for iHela platform.
+Python SDK for the iHela Credit Union API for financial services in Burundi.
 
-Get started
------------
+Install
+-------
 
-1. Install the package with ``pip install ihela-python-client``
-2. import the package for using the provided functions to communicate with the iHela API. The `redirect_uri` must be registered with the client created by iHela both for test and production.
-3. Init a bill and redirect the client to the bill url.
-4. Verify after if a bill has been paid.
+``pip install ihela-sdk``
 
-Visit the github ( https://github.com/ubuviz/ihela-pyhton-client ) page for more details.
+Python 3.10+.
+
+Documentation
+-------------
+
+Full documentation at https://UbuhingaVizion.github.io/ihela-sdk/
+
+- `Getting Started <https://UbuhingaVizion.github.io/ihela-sdk/getting-started/>`_
+- `API Reference <https://UbuhingaVizion.github.io/ihela-sdk/api/>`_
+- `Django Integration <https://UbuhingaVizion.github.io/ihela-sdk/django/>`_
+
+Repository: https://github.com/UbuhingaVizion/ihela-sdk

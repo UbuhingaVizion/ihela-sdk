@@ -601,12 +601,11 @@ wheels = [
 
 [[package]]
 name = "ihela-sdk"
-version = "0.1.1"
+version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
-    { name = "requests" },
 ]
 
 [package.optional-dependencies]
@@ -641,7 +640,6 @@ requires-dist = [
     { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.5.0" },
     { name = "mkdocs-material", marker = "extra == 'docs'", specifier = ">=9.5.0" },
     { name = "pydantic", specifier = ">=2.0.0" },
-    { name = "requests", specifier = ">=2.22.0" },
 ]
 provides-extras = ["django", "docs"]
 

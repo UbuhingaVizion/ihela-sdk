@@ -3,8 +3,11 @@ name: Deploy Docs
 on:
   push:
     branches:
-      - main
-      - develop
+      - master
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "README.md"
 
 permissions:
   contents: write
