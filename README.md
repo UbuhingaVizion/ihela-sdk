@@ -6,6 +6,7 @@
 [![Docs](https://img.shields.io/badge/docs-mkdocs-blue)](https://UbuhingaVizion.github.io/ihela-sdk/)
 
 Python SDK for the iHela Credit Union API for financial services in Burundi.
+Framework-agnostic — works with Django, Flask, FastAPI, or any Python application.
 
 ## Installation
 
@@ -13,18 +14,10 @@ Python SDK for the iHela Credit Union API for financial services in Burundi.
 pip install ihela-sdk
 ```
 
-With Django integration:
-
-```bash
-pip install "ihela-sdk[django]"
-```
-
 Or with `uv`:
 
 ```bash
 uv add ihela-sdk
-# with django extra
-uv add "ihela-sdk[django]"
 ```
 
 ## Quick Start
@@ -35,13 +28,25 @@ from ihela_sdk import MerchantClient
 client = MerchantClient("your_client_id", "your_client_secret", prod=False)
 ```
 
-For async applications (FastAPI, async Django):
+For async applications (FastAPI, asyncio):
 
 ```python
 from ihela_sdk import AsyncMerchantClient
 
 client = AsyncMerchantClient("your_client_id", "your_client_secret", prod=False)
 ```
+
+## OAuth2 SSO
+
+```python
+from ihela_sdk import MerchantAuthorizationClient
+
+auth = MerchantAuthorizationClient("client_id", "client_secret", prod=False)
+login_url = auth.get_authorization_url(redirect_uri="https://app.com/callback/")
+# Redirect user to login_url, handle callback with auth.authenticate(code, redirect_uri)
+```
+
+See the **[Authentication](https://UbuhingaVizion.github.io/ihela-sdk/authentication/)** guide for Django, Flask, and FastAPI examples.
 
 ## Exception Handling
 
@@ -64,7 +69,7 @@ except iHelaError:
 - **Banking Services**: Deposits, withdrawals, account lookup/balance, statements, transaction fees
 - **Agent Services**: Operations, withdrawal validation
 - **OAuth2**: Client credentials and authorization code flows
-- **Django Integration**: Pre-built views for django-allauth
+- **Framework-Agnostic**: No web framework dependency — OAuth2 primitives work everywhere
 - **Async Support**: Full async client variants using httpx
 
 ## Documentation

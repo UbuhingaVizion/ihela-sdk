@@ -6,17 +6,10 @@
 pip install ihela-sdk
 ```
 
-With Django integration:
-
-```bash
-pip install "ihela-sdk[django]"
-```
-
 Or with `uv`:
 
 ```bash
 uv add ihela-sdk
-uv add "ihela-sdk[django]"
 ```
 
 **Requirements**: Python 3.10+
@@ -200,4 +193,4 @@ deposit = await client.deposit(
 ## Next Steps
 
 * See the **[API Reference](api.md)** for all available methods and schemas.
-* See **[Django Integration](django.md)** for setting up OAuth2 with django-allauth.
+* See **[Authentication](authentication.md)** for OAuth2 and SSO setup.

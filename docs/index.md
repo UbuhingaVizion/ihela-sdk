@@ -10,14 +10,15 @@ synchronous and asynchronous clients backed by `httpx`.
 
 ## Key Features
 
+* **OAuth2 Authentication** — `client_credentials` and `authorization_code` grant
+  flows with automatic token refresh. Inject pre-obtained tokens or defer auth.
 * **Merchant Services** — Initiate and verify bills, cash-in to customer accounts,
   query bank lists, and perform customer lookups.
 * **Banking Services** — Deposits, withdrawals, account lookups, balance checks,
   mini-statements, transaction status, and fee calculation.
 * **Agent Services** — Agent deposits, withdrawal validation, and operation lookups.
-* **OAuth2 Authentication** — `client_credentials` and `authorization_code` grant
-  flows with automatic token refresh.
-* **Django Integration** — Pre-built views for `django-allauth` OAuth2 flows.
+* **Framework-Agnostic** — No web framework dependency. OAuth2 primitives work
+  with Django, Flask, FastAPI, or any Python application.
 * **Async & Sync** — Identical API surface via `BankingClient` / `AsyncBankingClient`,
   `AgentClient` / `AsyncAgentClient`, and `MerchantClient` / `AsyncMerchantClient`.
 * **Type-Checked** — PEP 561 `py.typed` marker and full type annotations.
@@ -32,7 +33,7 @@ synchronous and asynchronous clients backed by `httpx`.
 
 * **[Getting Started](getting-started.md)** — Install, authenticate, and make your first call.
 * **[API Reference](api.md)** — Complete reference for all clients, methods, and schemas.
-* **[Django Integration](django.md)** — Set up OAuth2 views with django-allauth.
+* **[Authentication](authentication.md)** — OAuth2 flows and framework integration (Django, Flask, FastAPI).
 
 ---
 
