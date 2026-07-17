@@ -1,6 +1,5 @@
 from allauth.socialaccount.models import SocialLogin
 from allauth.socialaccount.providers.oauth2.views import OAuth2View
-
 from django.conf import settings
 from ihela_client.client import Client as iHelaAPIClient
 

@@ -141,3 +141,4 @@ media/
 # Spatial DB & Webbank Configs
 *.mmdb
 apiconfig.ini
+site/
