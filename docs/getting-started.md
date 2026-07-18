@@ -166,6 +166,84 @@ client.deposit(...)
 # Automatically adds X-iHela-Signature header
 ```
 
+For incoming webhooks or callbacks, verify signatures received from iHela:
+
+```python
+from ihela_sdk import verify_signature
+
+is_valid = verify_signature(payload, signature, secret_key)
+```
+
+### Error Handling Philosophy
+
+The SDK raises a single generic `iHelaAPIError` for all gateway failures.
+The message is intentionally non-specific to prevent bots from mapping your
+environment (which accounts exist, which operations are live). Use the
+`response_code` attribute for internal programmatic handling only:
+
+```python
+try:
+    client.deposit(...)
+except iHelaAPIError as e:
+    # Never show response_code to end users
+    logger.warning(f"Deposit failed with code {e.response_code}")
+
+    if e.is_retryable:
+        await retry_later(...)  # Transient failures (5xx, code "07")
+
+    return {"error": "Transaction could not be completed"}
+```
+
+---
+
+## Production Guardrails
+
+### Circuit Breaker
+
+Prevents cascading failures when the iHela gateway is down. After 5 consecutive
+failures, all calls are suspended for 30 seconds:
+
+```python
+client = BankingClient("id", "secret",
+    circuit_breaker_threshold=5,     # failures before opening
+    circuit_breaker_cooldown=30.0,   # seconds before retry
+)
+
+try:
+    client.ping()
+except iHelaCircuitOpenError:
+    print("Gateway is down — circuit breaker open")
+```
+
+### Rate Limiting
+
+Prevent self-DoS with a token bucket per client instance:
+
+```python
+client = BankingClient("id", "secret", rate_limit=100)  # 100 req/min
+
+try:
+    client.deposit(...)
+except iHelaRateLimitError:
+    print("Too many requests — slow down")
+```
+
+### Idempotency
+
+On deposit and withdrawal operations, if no `external_reference` is provided,
+the SDK auto-generates a UUID to prevent duplicate transactions:
+
+```python
+# Automatically gets a UUID external_reference
+client.deposit(credit_account="ACT-123", credit_account_holder="John",
+               amount=500.0, description="Payment", pin_code="1234")
+
+# Or provide your own for idempotency across retries
+client.deposit(credit_account="ACT-123", credit_account_holder="John",
+               amount=500.0, description="Payment", pin_code="1234",
+               external_reference="my-unique-ref-001")
+```
+
 ---
 
 ## Async Usage

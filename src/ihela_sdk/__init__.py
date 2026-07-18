@@ -1,16 +1,25 @@
-from .agent_client import AgentClient, AsyncAgentClient
-from .async_merchant_client import AsyncMerchantClient
-from .banking_client import AsyncBankingClient, BankingClient
-from .exceptions import iHelaAPIError, iHelaAuthenticationError, iHelaError
-from .merchant_authorization import MerchantAuthorizationClient
-from .merchant_client import MerchantClient
-from .security import (
+from .agent.async_client import AsyncAgentClient
+from .agent.client import AgentClient
+from .auth.client import MerchantAuthorizationClient
+from .banking.async_client import AsyncBankingClient
+from .banking.client import BankingClient
+from .core.exceptions import (
+    iHelaAPIError,
+    iHelaAuthenticationError,
+    iHelaCircuitOpenError,
+    iHelaError,
+    iHelaRateLimitError,
+)
+from .core.security import (
     DepositPayload,
     ValidateWithdrawalPayload,
     WithdrawalPayload,
     generate_signature,
     mask_sensitive_data,
+    verify_signature,
 )
+from .merchant.async_client import AsyncMerchantClient
+from .merchant.client import MerchantClient
 
 __all__ = [
     "MerchantAuthorizationClient",
@@ -23,7 +32,10 @@ __all__ = [
     "iHelaError",
     "iHelaAuthenticationError",
     "iHelaAPIError",
+    "iHelaCircuitOpenError",
+    "iHelaRateLimitError",
     "generate_signature",
+    "verify_signature",
     "mask_sensitive_data",
     "DepositPayload",
     "WithdrawalPayload",
