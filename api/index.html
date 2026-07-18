@@ -1,0 +1,2559 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://UbuhingaVizion.github.io/ihela-sdk/api/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../authentication/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>API Reference - iHela SDK</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="iHela SDK" class="md-header__button md-logo" aria-label="iHela SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iHela SDK
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/UbuhingaVizion/ihela-sdk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    UbuhingaVizion/ihela-sdk
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../getting-started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../authentication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Authentication
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="iHela SDK" class="md-nav__button md-logo" aria-label="iHela SDK" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    iHela SDK
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/UbuhingaVizion/ihela-sdk" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    UbuhingaVizion/ihela-sdk
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#merchantclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MerchantClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MerchantClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customer_lookupbank_slug-customer_idnone-account_numbernone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        customer_lookup(bank_slug, customer_id=None, account_number=None)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init_billamount-user-description-reference-banknone-bank_client_idnone-redirect_urinone-pin_codenone-merchant_descriptionnone-payment_product_idnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        init_bill(amount, user, description, reference, *, bank=None, bank_client_id=None, redirect_uri=None, pin_code=None, merchant_description=None, payment_product_id=None)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify_billbill_code-merchant_reference-pin_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify_bill(bill_code, merchant_reference, pin_code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cashin_clientbank_slug-account-amount-merchant_reference-description-pin_codenone-credit_account_holdernone-currencybif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cashin_client(bank_slug, account, amount, merchant_reference, description, *, pin_code=None, credit_account_holder=None, currency="BIF")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_bank_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_bank_list()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_cashin_bank_list-get_cashout_bank_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cashin_bank_list() / get_cashout_bank_list()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bankingclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BankingClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BankingClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ping()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request_tokenusername-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request_token(username, password)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account_lookupaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account_lookup(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account_balanceaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account_balance(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depositcredit_account-credit_account_holder-amount-description-external_reference-pin_code-external_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deposit(credit_account, credit_account_holder, amount, description, external_reference, pin_code, external_code="")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#withdrawaldebit_account-debit_account_holder-amount-description-external_reference-pin_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        withdrawal(debit_account, debit_account_holder, amount, description, external_reference, pin_code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statementaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        statement(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction_statusexternal_reference-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction_status(external_reference, reference)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction_feecurrency-operation_type-amount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction_fee(currency, operation_type, amount)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agentclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AgentClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AgentClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ping()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request_tokenusername-password_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request_token(username, password)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account_lookupaccount_number-account_balanceaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account_lookup(account_number) / account_balance(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depositcredit_account-credit_account_holder-amount-description-external_reference-pin_code-external_code_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deposit(credit_account, credit_account_holder, amount, description, external_reference, pin_code, external_code="")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation_lookupoperation_code-amount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        operation_lookup(operation_code, amount)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate_withdrawalexternal_reference-pin_code-agent_code-amount-external_code-validation_operation_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate_withdrawal(external_reference, pin_code, agent_code, amount, external_code, validation_operation_code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction_statusexternal_reference-reference_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction_status(external_reference, reference)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#async-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async Clients
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pydantic Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pydantic Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#depositpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DepositPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#withdrawalpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WithdrawalPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensitive-data-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensitive Data Masking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safe-object-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safe Object Representation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webhook-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webhook Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Guardrails
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Production Guardrails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit Breaker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rate-limiter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rate Limiter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Endpoint Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merchant-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merchant Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#banking-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Banking Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#merchantclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MerchantClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MerchantClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#customer_lookupbank_slug-customer_idnone-account_numbernone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        customer_lookup(bank_slug, customer_id=None, account_number=None)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init_billamount-user-description-reference-banknone-bank_client_idnone-redirect_urinone-pin_codenone-merchant_descriptionnone-payment_product_idnone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        init_bill(amount, user, description, reference, *, bank=None, bank_client_id=None, redirect_uri=None, pin_code=None, merchant_description=None, payment_product_id=None)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verify_billbill_code-merchant_reference-pin_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        verify_bill(bill_code, merchant_reference, pin_code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cashin_clientbank_slug-account-amount-merchant_reference-description-pin_codenone-credit_account_holdernone-currencybif" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cashin_client(bank_slug, account, amount, merchant_reference, description, *, pin_code=None, credit_account_holder=None, currency="BIF")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_bank_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_bank_list()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_cashin_bank_list-get_cashout_bank_list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_cashin_bank_list() / get_cashout_bank_list()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bankingclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BankingClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="BankingClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ping()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request_tokenusername-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request_token(username, password)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account_lookupaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account_lookup(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account_balanceaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account_balance(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depositcredit_account-credit_account_holder-amount-description-external_reference-pin_code-external_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deposit(credit_account, credit_account_holder, amount, description, external_reference, pin_code, external_code="")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#withdrawaldebit_account-debit_account_holder-amount-description-external_reference-pin_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        withdrawal(debit_account, debit_account_holder, amount, description, external_reference, pin_code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#statementaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        statement(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction_statusexternal_reference-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction_status(external_reference, reference)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction_feecurrency-operation_type-amount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction_fee(currency, operation_type, amount)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agentclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AgentClient
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AgentClient">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ping_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ping()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request_tokenusername-password_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        request_token(username, password)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#account_lookupaccount_number-account_balanceaccount_number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        account_lookup(account_number) / account_balance(account_number)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#depositcredit_account-credit_account_holder-amount-description-external_reference-pin_code-external_code_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        deposit(credit_account, credit_account_holder, amount, description, external_reference, pin_code, external_code="")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation_lookupoperation_code-amount" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        operation_lookup(operation_code, amount)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate_withdrawalexternal_reference-pin_code-agent_code-amount-external_code-validation_operation_code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate_withdrawal(external_reference, pin_code, agent_code, amount, external_code, validation_operation_code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transaction_statusexternal_reference-reference_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transaction_status(external_reference, reference)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#async-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Async Clients
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pydantic-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pydantic Models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pydantic Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#depositpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DepositPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#withdrawalpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WithdrawalPayload
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensitive-data-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sensitive Data Masking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#safe-object-representation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Safe Object Representation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Token Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#request-signing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request Signing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#webhook-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Webhook Verification
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Guardrails
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Production Guardrails">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Circuit Breaker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rate-limiter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rate Limiter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endpoint-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Endpoint Reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Endpoint Reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merchant-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merchant Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#banking-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Banking Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agent-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agent Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api-reference">API Reference</h1>
+<h2 id="merchantclient">MerchantClient</h2>
+<p>Handles payments, bills, bank lists, and customer lookups.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ihela_sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">MerchantClient</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">MerchantClient</span><span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="s2">&quot;client_secret&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>client_id</code></td>
+<td><code>str</code></td>
+<td>required</td>
+<td>OAuth2 client ID from iHela</td>
+</tr>
+<tr>
+<td><code>client_secret</code></td>
+<td><code>str</code></td>
+<td>required</td>
+<td>OAuth2 client secret</td>
+</tr>
+<tr>
+<td><code>prod</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td><code>True</code> for production, <code>False</code> for test gateway</td>
+</tr>
+<tr>
+<td><code>ihela_url</code></td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+<td>Override the base gateway URL</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="customer_lookupbank_slug-customer_idnone-account_numbernone"><code>customer_lookup(bank_slug, customer_id=None, account_number=None)</code></h3>
+<p>Look up a customer account by bank slug and account number or customer ID.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">customer</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">customer_lookup</span><span class="p">(</span><span class="n">bank_slug</span><span class="o">=</span><span class="s2">&quot;MF1-0001&quot;</span><span class="p">,</span> <span class="n">account_number</span><span class="o">=</span><span class="s2">&quot;76000111&quot;</span><span class="p">)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># {&#39;account_number&#39;: &#39;000001-01&#39;, &#39;name&#39;: &#39;Bigirimana Fabrice&#39;, &#39;response_status&#39;: 200}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="init_billamount-user-description-reference-banknone-bank_client_idnone-redirect_urinone-pin_codenone-merchant_descriptionnone-payment_product_idnone"><code>init_bill(amount, user, description, reference, *, bank=None, bank_client_id=None, redirect_uri=None, pin_code=None, merchant_description=None, payment_product_id=None)</code></h3>
+<p>Create a payment bill. The user must confirm payment in iHela.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>amount</code></td>
+<td><code>int</code></td>
+<td>Amount in BIF</td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td><code>str</code></td>
+<td>Customer email, phone, or iHela ID</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str</code></td>
+<td>Payment description</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td><code>str</code></td>
+<td>Unique merchant reference</td>
+</tr>
+<tr>
+<td><code>bank</code></td>
+<td><code>str \| None</code></td>
+<td>Bank slug (e.g. <code>"MF1-0001"</code>)</td>
+</tr>
+<tr>
+<td><code>pin_code</code></td>
+<td><code>str \| None</code></td>
+<td>4-digit pin</td>
+</tr>
+<tr>
+<td><code>redirect_uri</code></td>
+<td><code>str \| None</code></td>
+<td>Redirect URL after payment</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">bill</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">init_bill</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">amount</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;76000111&quot;</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Product Purchase&quot;</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">reference</span><span class="o">=</span><span class="s2">&quot;merchant-ref-001&quot;</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">bank</span><span class="o">=</span><span class="s2">&quot;MF1-0001&quot;</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">redirect_uri</span><span class="o">=</span><span class="s2">&quot;https://yourapp.com/callback/&quot;</span><span class="p">,</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># {&#39;bill&#39;: {&#39;code&#39;: &#39;CODE-20230321-9E29QH1&#39;, ...}, &#39;response_status&#39;: 200}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="verify_billbill_code-merchant_reference-pin_code"><code>verify_bill(bill_code, merchant_reference, pin_code)</code></h3>
+<p>Check if a bill has been paid, is pending, expired, or cancelled.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">status</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">verify_bill</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">bill_code</span><span class="o">=</span><span class="s2">&quot;CODE-20230321-9E29QH1&quot;</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">merchant_reference</span><span class="o">=</span><span class="s2">&quot;merchant-ref-001&quot;</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># response_data.status can be: &quot;Initial&quot;, &quot;Paid&quot;, &quot;Canceled&quot;, or &quot;Error&quot;</span>
+</span></code></pre></div>
+<hr />
+<h3 id="cashin_clientbank_slug-account-amount-merchant_reference-description-pin_codenone-credit_account_holdernone-currencybif"><code>cashin_client(bank_slug, account, amount, merchant_reference, description, *, pin_code=None, credit_account_holder=None, currency="BIF")</code></h3>
+<p>Send money or refund a customer account.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">cashin</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">cashin_client</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">bank_slug</span><span class="o">=</span><span class="s2">&quot;MF1-0001&quot;</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">account</span><span class="o">=</span><span class="s2">&quot;000001-01&quot;</span><span class="p">,</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">amount</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">merchant_reference</span><span class="o">=</span><span class="s2">&quot;REF3223&quot;</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Refunding customer&quot;</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="get_bank_list"><code>get_bank_list()</code></h3>
+<p>Returns all available payment banks.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">banks</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_bank_list</span><span class="p">()</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># {&#39;banks&#39;: [{&#39;slug&#39;: &#39;MF1-0001&#39;, &#39;name&#39;: &#39;iHela Credit Union&#39;, ...}], ...}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="get_cashin_bank_list-get_cashout_bank_list"><code>get_cashin_bank_list()</code> / <code>get_cashout_bank_list()</code></h3>
+<p>Returns banks supporting cash-in or cash-out operations.</p>
+<hr />
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get_access_token()</code></td>
+<td>Returns the current access token</td>
+</tr>
+<tr>
+<td><code>is_authenticated()</code></td>
+<td>Whether the client has a valid token</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="bankingclient">BankingClient</h2>
+<p>Banking operations: deposits, withdrawals, account management, and transactions.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ihela_sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">BankingClient</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">BankingClient</span><span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="s2">&quot;client_secret&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>client_id</code></td>
+<td><code>str</code></td>
+<td>required</td>
+<td>OAuth2 client ID</td>
+</tr>
+<tr>
+<td><code>client_secret</code></td>
+<td><code>str</code></td>
+<td>required</td>
+<td>OAuth2 client secret</td>
+</tr>
+<tr>
+<td><code>prod</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td>Environment selector</td>
+</tr>
+<tr>
+<td><code>ihela_url</code></td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+<td>Override base URL</td>
+</tr>
+<tr>
+<td><code>ssl_cert</code></td>
+<td><code>any</code></td>
+<td><code>None</code></td>
+<td>SSL client certificate path</td>
+</tr>
+<tr>
+<td><code>signature_key</code></td>
+<td><code>str</code></td>
+<td><code>None</code></td>
+<td>HMAC signing key for <code>X-iHela-Signature</code> header</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="ping"><code>ping()</code></h3>
+<p>Health check — verifies connectivity and authentication.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">client</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># {&#39;success&#39;: True, &#39;response_status&#39;: 200}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="request_tokenusername-password"><code>request_token(username, password)</code></h3>
+<p>Request tokens via username/password (alternative to client credentials).</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">tokens</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">request_token</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="c1"># {&#39;access&#39;: &#39;...&#39;, &#39;refresh&#39;: &#39;...&#39;}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="account_lookupaccount_number"><code>account_lookup(account_number)</code></h3>
+<p>Retrieve account details by account number.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">info</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">account_lookup</span><span class="p">(</span><span class="s2">&quot;76077736&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="account_balanceaccount_number"><code>account_balance(account_number)</code></h3>
+<p>Get the current balance for an account.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">balance</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">account_balance</span><span class="p">(</span><span class="s2">&quot;76077736&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="depositcredit_account-credit_account_holder-amount-description-external_reference-pin_code-external_code"><code>deposit(credit_account, credit_account_holder, amount, description, external_reference, pin_code, external_code="")</code></h3>
+<p>Deposit funds into an account. Payload is validated with <code>DepositPayload</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>credit_account</code></td>
+<td><code>str</code></td>
+<td>Target account number</td>
+</tr>
+<tr>
+<td><code>credit_account_holder</code></td>
+<td><code>str</code></td>
+<td>Account holder name</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td><code>float</code></td>
+<td>Positive amount</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str</code></td>
+<td>Transaction description</td>
+</tr>
+<tr>
+<td><code>external_reference</code></td>
+<td><code>str</code></td>
+<td>Your unique reference</td>
+</tr>
+<tr>
+<td><code>pin_code</code></td>
+<td><code>str</code></td>
+<td>4-6 digit pin</td>
+</tr>
+<tr>
+<td><code>external_code</code></td>
+<td><code>str</code></td>
+<td>Optional external code</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">client</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">credit_account</span><span class="o">=</span><span class="s2">&quot;ACT-123&quot;</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">credit_account_holder</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">amount</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Invoice #42&quot;</span><span class="p">,</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">external_reference</span><span class="o">=</span><span class="s2">&quot;REF-001&quot;</span><span class="p">,</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="withdrawaldebit_account-debit_account_holder-amount-description-external_reference-pin_code"><code>withdrawal(debit_account, debit_account_holder, amount, description, external_reference, pin_code)</code></h3>
+<p>Withdraw funds from an account. Payload is validated with <code>WithdrawalPayload</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">client</span><span class="o">.</span><span class="n">withdrawal</span><span class="p">(</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">debit_account</span><span class="o">=</span><span class="s2">&quot;ACT-123&quot;</span><span class="p">,</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">debit_account_holder</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">amount</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Cash withdrawal&quot;</span><span class="p">,</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">external_reference</span><span class="o">=</span><span class="s2">&quot;REF-002&quot;</span><span class="p">,</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="statementaccount_number"><code>statement(account_number)</code></h3>
+<p>Get a mini-statement for an account.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">stmt</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">statement</span><span class="p">(</span><span class="s2">&quot;76077736&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="transaction_statusexternal_reference-reference"><code>transaction_status(external_reference, reference)</code></h3>
+<p>Check the status of a transaction.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">status</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction_status</span><span class="p">(</span><span class="s2">&quot;REF-001&quot;</span><span class="p">,</span> <span class="s2">&quot;internal-reference&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="transaction_feecurrency-operation_type-amount"><code>transaction_fee(currency, operation_type, amount)</code></h3>
+<p>Query transaction fees before performing an operation.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>currency</code></td>
+<td><code>str</code></td>
+<td>ISO currency code (e.g. <code>"BIF"</code>)</td>
+</tr>
+<tr>
+<td><code>operation_type</code></td>
+<td><code>str</code></td>
+<td><code>"deposit"</code>, <code>"withdrawal"</code>, etc.</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td><code>str</code></td>
+<td>Amount to query</td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">fee</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">transaction_fee</span><span class="p">(</span><span class="s2">&quot;BIF&quot;</span><span class="p">,</span> <span class="s2">&quot;withdrawal&quot;</span><span class="p">,</span> <span class="s2">&quot;4000&quot;</span><span class="p">)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># {&#39;success&#39;: True, &#39;response_data&#39;: {&#39;fee&#39;: &#39;100&#39;, &#39;currency&#39;: &#39;BIF&#39;, ...}}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="token-management">Token Management</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>authenticate()</code></td>
+<td>Acquire a new access token</td>
+</tr>
+<tr>
+<td><code>refresh_token()</code></td>
+<td>Refresh an expired access token</td>
+</tr>
+<tr>
+<td><code>is_authenticated()</code></td>
+<td>Check if token is valid</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="agentclient">AgentClient</h2>
+<p>Agent-specific operations: deposits and withdrawal validation.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ihela_sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">AgentClient</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">AgentClient</span><span class="p">(</span><span class="s2">&quot;client_id&quot;</span><span class="p">,</span> <span class="s2">&quot;client_secret&quot;</span><span class="p">,</span> <span class="n">prod</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Same constructor parameters as <code>BankingClient</code>.</p>
+<hr />
+<h3 id="ping_1"><code>ping()</code></h3>
+<p>Health check.</p>
+<h3 id="request_tokenusername-password_1"><code>request_token(username, password)</code></h3>
+<p>Username/password token request.</p>
+<h3 id="account_lookupaccount_number-account_balanceaccount_number"><code>account_lookup(account_number)</code> / <code>account_balance(account_number)</code></h3>
+<p>Same as BankingClient.</p>
+<hr />
+<h3 id="depositcredit_account-credit_account_holder-amount-description-external_reference-pin_code-external_code_1"><code>deposit(credit_account, credit_account_holder, amount, description, external_reference, pin_code, external_code="")</code></h3>
+<p>Agent deposit. Validated with <code>DepositPayload</code>. Hits <code>agent-deposit/</code> endpoint.</p>
+<hr />
+<h3 id="operation_lookupoperation_code-amount"><code>operation_lookup(operation_code, amount)</code></h3>
+<p>Look up an operation by its code.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">operation_lookup</span><span class="p">(</span><span class="s2">&quot;op-code&quot;</span><span class="p">,</span> <span class="s2">&quot;5000&quot;</span><span class="p">)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># {&#39;validation_operation_code&#39;: &#39;val-123&#39;, ...}</span>
+</span></code></pre></div>
+<hr />
+<h3 id="validate_withdrawalexternal_reference-pin_code-agent_code-amount-external_code-validation_operation_code"><code>validate_withdrawal(external_reference, pin_code, agent_code, amount, external_code, validation_operation_code)</code></h3>
+<p>Validate and confirm a withdrawal. Validated with <code>ValidateWithdrawalPayload</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">client</span><span class="o">.</span><span class="n">validate_withdrawal</span><span class="p">(</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">external_reference</span><span class="o">=</span><span class="s2">&quot;REF-123&quot;</span><span class="p">,</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>    <span class="n">agent_code</span><span class="o">=</span><span class="s2">&quot;AGT-001&quot;</span><span class="p">,</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">amount</span><span class="o">=</span><span class="s2">&quot;5000&quot;</span><span class="p">,</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>    <span class="n">external_code</span><span class="o">=</span><span class="s2">&quot;EXT-001&quot;</span><span class="p">,</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">validation_operation_code</span><span class="o">=</span><span class="s2">&quot;VAL-001&quot;</span><span class="p">,</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="transaction_statusexternal_reference-reference_1"><code>transaction_status(external_reference, reference)</code></h3>
+<p>Same as BankingClient.</p>
+<hr />
+<h2 id="async-clients">Async Clients</h2>
+<p>Every client has an async counterpart. Import from <code>ihela_sdk</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Sync</th>
+<th>Async</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MerchantClient</code></td>
+<td><code>AsyncMerchantClient</code></td>
+</tr>
+<tr>
+<td><code>BankingClient</code></td>
+<td><code>AsyncBankingClient</code></td>
+</tr>
+<tr>
+<td><code>AgentClient</code></td>
+<td><code>AsyncAgentClient</code></td>
+</tr>
+</tbody>
+</table>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ihela_sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncBankingClient</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>    <span class="n">client</span> <span class="o">=</span> <span class="n">AsyncBankingClient</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">)</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">authenticate</span><span class="p">()</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">balance</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">account_balance</span><span class="p">(</span><span class="s2">&quot;76077736&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>All methods are identical — just <code>await</code> them.</p>
+<hr />
+<h2 id="pydantic-models">Pydantic Models</h2>
+<p>The SDK exports validation models you can use directly:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ihela_sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">DepositPayload</span><span class="p">,</span> <span class="n">WithdrawalPayload</span><span class="p">,</span> <span class="n">ValidateWithdrawalPayload</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="c1"># Validate before calling the API</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="n">payload</span> <span class="o">=</span> <span class="n">DepositPayload</span><span class="p">(</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">credit_account</span><span class="o">=</span><span class="s2">&quot;ACT-1234&quot;</span><span class="p">,</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">credit_account_holder</span><span class="o">=</span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">amount</span><span class="o">=</span><span class="mf">1500.50</span><span class="p">,</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Invoice Payment&quot;</span><span class="p">,</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="n">external_reference</span><span class="o">=</span><span class="s2">&quot;REF-883&quot;</span><span class="p">,</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>    <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="depositpayload"><code>DepositPayload</code></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>credit_account</code></td>
+<td><code>str</code></td>
+<td>3-50 chars, <code>[A-Z0-9\-]</code></td>
+</tr>
+<tr>
+<td><code>credit_account_holder</code></td>
+<td><code>str</code></td>
+<td>2-100 chars</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td><code>float</code></td>
+<td><code>&gt; 0</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str</code></td>
+<td>1-255 chars</td>
+</tr>
+<tr>
+<td><code>external_reference</code></td>
+<td><code>str</code></td>
+<td>3-100 chars</td>
+</tr>
+<tr>
+<td><code>pin_code</code></td>
+<td><code>str</code></td>
+<td>4-6 digits</td>
+</tr>
+<tr>
+<td><code>external_code</code></td>
+<td><code>str</code></td>
+<td>Optional, max 100 chars</td>
+</tr>
+</tbody>
+</table>
+<h3 id="withdrawalpayload"><code>WithdrawalPayload</code></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>debit_account</code></td>
+<td><code>str</code></td>
+<td>3-50 chars, <code>[A-Z0-9\-]</code></td>
+</tr>
+<tr>
+<td><code>debit_account_holder</code></td>
+<td><code>str</code></td>
+<td>2-100 chars</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td><code>float</code></td>
+<td><code>&gt; 0</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str</code></td>
+<td>1-255 chars</td>
+</tr>
+<tr>
+<td><code>external_reference</code></td>
+<td><code>str</code></td>
+<td>3-100 chars</td>
+</tr>
+<tr>
+<td><code>pin_code</code></td>
+<td><code>str</code></td>
+<td>4-6 digits</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="security">Security</h2>
+<h3 id="sensitive-data-masking">Sensitive Data Masking</h3>
+<p>All API responses are automatically scanned before debug logging. The following
+fields are replaced with <code>********</code>:</p>
+<p><code>pin_code</code>, <code>access_token</code>, <code>refresh_token</code>, <code>client_secret</code>, <code>client_id</code>,
+<code>password</code>, <code>token</code>, <code>secret</code>, <code>api_key</code>, <code>authorization</code></p>
+<h3 id="safe-object-representation">Safe Object Representation</h3>
+<p><code>__repr__</code> never exposes credentials — it only shows the class name and
+environment flag:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">client</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="o">&lt;</span><span class="n">BankingClient</span> <span class="n">prod_env</span><span class="o">=</span><span class="kc">False</span><span class="o">&gt;</span>
+</span></code></pre></div>
+<h3 id="token-lifecycle">Token Lifecycle</h3>
+<p>All clients support <code>clear_token()</code> to remove the access token from memory:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">client</span><span class="o">.</span><span class="n">clear_token</span><span class="p">()</span>  <span class="c1"># auth_token_object is now None</span>
+</span></code></pre></div>
+<h3 id="token-injection">Token Injection</h3>
+<p>Pass a pre-obtained token to skip authentication — no credentials are
+transmitted:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">client</span> <span class="o">=</span> <span class="n">BankingClient</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">,</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>    <span class="n">token</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span> <span class="s2">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">})</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="n">client</span> <span class="o">=</span> <span class="n">BankingClient</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">,</span> <span class="n">auto_auth</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="c1"># Authenticates lazily on the first API call</span>
+</span></code></pre></div>
+<h3 id="request-signing">Request Signing</h3>
+<p>Provide a <code>signature_key</code> to Banking or Agent clients to HMAC-SHA256 sign
+every deposit, withdrawal, and validation request:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">client</span> <span class="o">=</span> <span class="n">BankingClient</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">,</span> <span class="n">signature_key</span><span class="o">=</span><span class="s2">&quot;your-key&quot;</span><span class="p">)</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="n">client</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="c1"># Adds X-iHela-Signature: &lt;hmac-sha256-hex&gt; header</span>
+</span></code></pre></div>
+<h3 id="webhook-verification">Webhook Verification</h3>
+<p>Verify incoming webhook signatures from iHela:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ihela_sdk</span><span class="w"> </span><span class="kn">import</span> <span class="n">verify_signature</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="k">if</span> <span class="n">verify_signature</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">secret_key</span><span class="p">):</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>    <span class="n">process_webhook</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h2 id="production-guardrails">Production Guardrails</h2>
+<p>All sync clients (<code>BankingClient</code>, <code>AgentClient</code>, <code>MerchantClient</code>,
+<code>MerchantAuthorizationClient</code>) support the following guardrails via constructor
+parameters.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rate_limit</code></td>
+<td><code>int</code></td>
+<td><code>0</code> (disabled)</td>
+<td>Max requests per minute per instance</td>
+</tr>
+<tr>
+<td><code>circuit_breaker_threshold</code></td>
+<td><code>int</code></td>
+<td><code>5</code></td>
+<td>Consecutive failures before opening circuit</td>
+</tr>
+<tr>
+<td><code>circuit_breaker_cooldown</code></td>
+<td><code>float</code></td>
+<td><code>30.0</code></td>
+<td>Seconds before re-probing after open</td>
+</tr>
+</tbody>
+</table>
+<h3 id="circuit-breaker">Circuit Breaker</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">client</span> <span class="o">=</span> <span class="n">BankingClient</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">,</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>    <span class="n">circuit_breaker_threshold</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">circuit_breaker_cooldown</span><span class="o">=</span><span class="mf">60.0</span><span class="p">)</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>    <span class="n">client</span><span class="o">.</span><span class="n">ping</span><span class="p">()</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="k">except</span> <span class="n">iHelaCircuitOpenError</span><span class="p">:</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>    <span class="c1"># Circuit is open — wait before retrying</span>
+</span></code></pre></div>
+<p>Check circuit state:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">client</span><span class="o">.</span><span class="n">circuit_breaker</span><span class="o">.</span><span class="n">state</span>    <span class="c1"># &quot;closed&quot;, &quot;open&quot;, &quot;half_open&quot;</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">client</span><span class="o">.</span><span class="n">circuit_breaker</span><span class="o">.</span><span class="n">failure_count</span>
+</span></code></pre></div>
+<h3 id="rate-limiter">Rate Limiter</h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">client</span> <span class="o">=</span> <span class="n">BankingClient</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;secret&quot;</span><span class="p">,</span> <span class="n">rate_limit</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>    <span class="n">client</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="k">except</span> <span class="n">iHelaRateLimitError</span><span class="p">:</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>    <span class="c1"># Client-side rate limit exceeded</span>
+</span></code></pre></div>
+<h3 id="idempotency">Idempotency</h3>
+<p>On <code>deposit()</code> and <code>withdrawal()</code> operations, if <code>external_reference</code> is empty,
+a UUID is auto-generated to prevent duplicate transactions:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># Auto-generated external_reference</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">client</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">credit_account</span><span class="o">=</span><span class="s2">&quot;ACT-123&quot;</span><span class="p">,</span> <span class="n">credit_account_holder</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>               <span class="n">amount</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Payment&quot;</span><span class="p">,</span> <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">)</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="c1"># Explicit idempotency key for retries</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="n">client</span><span class="o">.</span><span class="n">deposit</span><span class="p">(</span><span class="n">credit_account</span><span class="o">=</span><span class="s2">&quot;ACT-123&quot;</span><span class="p">,</span> <span class="n">credit_account_holder</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a>               <span class="n">amount</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Payment&quot;</span><span class="p">,</span> <span class="n">pin_code</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>               <span class="n">external_reference</span><span class="o">=</span><span class="s2">&quot;my-unique-id&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<hr />
+<h2 id="endpoint-reference">Endpoint Reference</h2>
+<p>The SDK maps to the following iHela API endpoints:</p>
+<h3 id="authentication">Authentication</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>oAuth2/token/</code></td>
+<td>Obtain access token (client credentials)</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/auth-token/</code></td>
+<td>Obtain token via username/password</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/auth-token/refresh/</code></td>
+<td>Refresh access token</td>
+</tr>
+</tbody>
+</table>
+<h3 id="merchant-services">Merchant Services</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>api/v1/payments/bank/</code></td>
+<td>List all banks</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>api/v1/payments/bank/cashin/</code></td>
+<td>List cash-in banks</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>api/v1/payments/bank/cashout/</code></td>
+<td>List cash-out banks</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>api/v1/bank/{slug}/account/lookup/</code></td>
+<td>Customer account lookup</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>api/v1/payments/bill-init/</code></td>
+<td>Initialize a bill</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>api/v1/payments/bill-check/</code></td>
+<td>Verify bill status</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>api/v1/payments/cash-in/</code></td>
+<td>Cash-in to customer account</td>
+</tr>
+</tbody>
+</table>
+<h3 id="banking-services">Banking Services</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>ihela/api/v1/ping/</code></td>
+<td>Health check</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/account-lookup/</code></td>
+<td>Account lookup</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/bsces/balance/</code></td>
+<td>Account balance</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/make-deposit/</code></td>
+<td>Deposit funds</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/make-withdrawal/</code></td>
+<td>Withdraw funds</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>ihela/api/v1/mini-statement/</code></td>
+<td>Mini statement</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/transaction-status/</code></td>
+<td>Transaction status</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/transaction-fee/</code></td>
+<td>Transaction fee query</td>
+</tr>
+</tbody>
+</table>
+<h3 id="agent-services">Agent Services</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>ihela/api/v1/ping/</code></td>
+<td>Health check</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/account-lookup/</code></td>
+<td>Account lookup</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/bsces/balance/</code></td>
+<td>Account balance</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/agent-deposit/</code></td>
+<td>Agent deposit</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/operation-lookup/</code></td>
+<td>Operation lookup</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/validate-withdrawal/</code></td>
+<td>Validate withdrawal</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>ihela/api/v1/transaction-status/</code></td>
+<td>Transaction status</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
