@@ -457,6 +457,77 @@ client.deposit(...)
 # Adds X-iHela-Signature: <hmac-sha256-hex> header
 ```
 
+### Webhook Verification
+
+Verify incoming webhook signatures from iHela:
+
+```python
+from ihela_sdk import verify_signature
+
+if verify_signature(payload, signature, secret_key):
+    process_webhook(payload)
+```
+
+---
+
+## Production Guardrails
+
+All sync clients (`BankingClient`, `AgentClient`, `MerchantClient`,
+`MerchantAuthorizationClient`) support the following guardrails via constructor
+parameters.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `rate_limit` | `int` | `0` (disabled) | Max requests per minute per instance |
+| `circuit_breaker_threshold` | `int` | `5` | Consecutive failures before opening circuit |
+| `circuit_breaker_cooldown` | `float` | `30.0` | Seconds before re-probing after open |
+
+### Circuit Breaker
+
+```python
+client = BankingClient("id", "secret",
+    circuit_breaker_threshold=3, circuit_breaker_cooldown=60.0)
+
+try:
+    client.ping()
+except iHelaCircuitOpenError:
+    # Circuit is open — wait before retrying
+```
+
+Check circuit state:
+
+```python
+client.circuit_breaker.state    # "closed", "open", "half_open"
+client.circuit_breaker.failure_count
+```
+
+### Rate Limiter
+
+```python
+client = BankingClient("id", "secret", rate_limit=100)
+
+try:
+    client.deposit(...)
+except iHelaRateLimitError:
+    # Client-side rate limit exceeded
+```
+
+### Idempotency
+
+On `deposit()` and `withdrawal()` operations, if `external_reference` is empty,
+a UUID is auto-generated to prevent duplicate transactions:
+
+```python
+# Auto-generated external_reference
+client.deposit(credit_account="ACT-123", credit_account_holder="John",
+               amount=500.0, description="Payment", pin_code="1234")
+
+# Explicit idempotency key for retries
+client.deposit(credit_account="ACT-123", credit_account_holder="John",
+               amount=500.0, description="Payment", pin_code="1234",
+               external_reference="my-unique-id")
+```
+
 ---
 
 ## Endpoint Reference

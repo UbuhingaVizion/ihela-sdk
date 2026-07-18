@@ -4,7 +4,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
-_SENSITIVE_KEYS = {
+_SENSITIVE_KEYS: set[str] = {
     "pin_code",
     "access_token",
     "refresh_token",
@@ -19,12 +19,6 @@ _SENSITIVE_KEYS = {
 
 
 def mask_sensitive_data(data: Any) -> Any:
-    """Recursively mask sensitive fields (pins, credentials, tokens) in any data
-    structure. Handles nested dicts, lists, and common key patterns found in API
-    responses (e.g. ``response_data.pin_code``).
-
-    Used internally before logging to prevent credential and PIN leakage.
-    """
     if isinstance(data, dict):
         masked: dict[str, Any] = {}
         for k, v in data.items():
@@ -39,7 +33,6 @@ def mask_sensitive_data(data: Any) -> Any:
 
 
 def generate_signature(payload: str, secret_key: str) -> str:
-    """Generate a cryptographic HMAC-SHA256 signature for payload verification."""
     return hmac.new(
         secret_key.encode("utf-8"),
         payload.encode("utf-8"),
@@ -47,9 +40,12 @@ def generate_signature(payload: str, secret_key: str) -> str:
     ).hexdigest()
 
 
-class DepositPayload(BaseModel):
-    """Pydantic schema to validate deposits before gateway dispatch."""
+def verify_signature(payload: str, signature: str, secret_key: str) -> bool:
+    expected = generate_signature(payload, secret_key)
+    return hmac.compare_digest(expected, signature)
 
+
+class DepositPayload(BaseModel):
     credit_account: str = Field(
         ..., min_length=3, max_length=50, pattern=r"^[A-Z0-9\-]+$"
     )
@@ -62,8 +58,6 @@ class DepositPayload(BaseModel):
 
 
 class WithdrawalPayload(BaseModel):
-    """Pydantic schema to validate withdrawals before gateway dispatch."""
-
     debit_account: str = Field(
         ..., min_length=3, max_length=50, pattern=r"^[A-Z0-9\-]+$"
     )
@@ -75,8 +69,6 @@ class WithdrawalPayload(BaseModel):
 
 
 class ValidateWithdrawalPayload(BaseModel):
-    """Pydantic schema to validate withdrawal validations before gateway dispatch."""
-
     external_reference: str = Field(..., min_length=3, max_length=100)
     pin_code: str = Field(..., min_length=4, max_length=6, pattern=r"^\d+$")
     agent_code: str = Field(..., min_length=3, max_length=50)
